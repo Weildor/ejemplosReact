@@ -1,0 +1,41 @@
+.cuerpoDiv{
+    background-color: brown;
+    display: flex;
+    gap: 10%;
+    align-items: center;
+}
+.card1Div{
+    display: flexbox;
+    background-color: aqua;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px 0px;
+    height: auto;
+    width: 160px;
+    border-radius: 6px;
+    text-align: center;
+    align-items: center;
+    /*margin-left: 50%;*/
+    
+}
+.card2Div{
+    display: flexbox;
+    background-color: aqua;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px 0px;
+    height: auto;
+    width: 160px;
+    border-radius: 6px;
+    text-align: center;
+    align-items: center;
+}
+.card3Div{
+    display: flexbox;
+    background-color: aqua;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px 0px;
+    height: auto;
+    width: 160px;
+    border-radius: 6px;
+    text-align: center;
+    align-items: center;
+}

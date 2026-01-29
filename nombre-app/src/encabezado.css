@@ -1,22 +1,32 @@
 .encabezadoDiv{
     background-color: bisque;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    
 }
 .logoDiv{
     display: inline-block;
+    padding: 0px 40px;
 }
 .logoDiv img{
     width: 150px;
     height: auto;
+    align-items: center;
+    display: block;
+    border-radius: 15px;
 }
 .menuDiv{
     display: inline-block;
     margin-left: 100px;
     vertical-align: top;
+    
 }
 .menuDiv ul{
     list-style-type: none;
     padding: 0;
-    background-color: coral;
+    border-radius: 20px;
+
 
 }
 .menuDiv ul li{
@@ -25,6 +35,16 @@
     font-weight: bold;
     color: black;
     cursor: pointer;
+    padding: 10px 50px;
+    background-color: rgb(223, 136, 65);
+    height: 50px;
+    width: 160px;
+    border-radius: 6px;
+    
+    
+}
+.menuDiv ul li:hover{
+    background-color: rgb(214, 61, 15);
 }
 .redesDiv{
     display: inline-block;
@@ -40,6 +60,7 @@
     display: inline;
     margin-left: 10px;
     cursor: pointer;
+    padding: 0px 1px;
 }
 .redesDiv ul li img{
     width: 15px;
