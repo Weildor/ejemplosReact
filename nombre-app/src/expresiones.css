@@ -1,40 +1,43 @@
 .cuerpoDiv{
-    background-color: brown;
+    background-color: Black;
+    margin: 25px;
     display: flex;
     gap: 10%;
     align-items: center;
+    padding: auto;
+    justify-content: space-evenly;
 }
 .card1Div{
     display: flexbox;
-    background-color: aqua;
+    background-color: White;
     font-family: 'Courier New', Courier, monospace;
-    padding: 20px 0px;
+    padding: auto;
     height: auto;
-    width: 160px;
+    width: auto;
     border-radius: 6px;
     text-align: center;
     align-items: center;
-    /*margin-left: 50%;*/
+    /*margin-left: 25%;*/
     
 }
 .card2Div{
     display: flexbox;
-    background-color: aqua;
+    background-color: White;
     font-family: 'Courier New', Courier, monospace;
-    padding: 20px 0px;
+    padding: auto;
     height: auto;
-    width: 160px;
+    width: auto;
     border-radius: 6px;
     text-align: center;
     align-items: center;
 }
-.card3Div{
+.card3Div div lu{
     display: flexbox;
-    background-color: aqua;
+    background-color: White;
     font-family: 'Courier New', Courier, monospace;
-    padding: 20px 0px;
+    padding: auto;
     height: auto;
-    width: 160px;
+    width: auto;
     border-radius: 6px;
     text-align: center;
     align-items: center;

@@ -1,3 +1,6 @@
+import iconoTerraria from './assets/imgcard/terraria.png';
+import iconoMinecraft from './assets/imgcard/minecraft.png';
+import iconoRimWorld from './assets/imgcard/rimworld.png';
 import './Expresiones.css';
 function Expresiones(){
     const nombre = 'Porkemon';
@@ -24,33 +27,27 @@ function Cuerpo(){
 function Card1(){
     return(
         <div className="card1Div">
-            <img src="" alt="" />
-            
-                <li>Nombre: Victor Dorian</li>
-                <li>Edad: 19 añotes</li>
-                <li>Color: Azul</li>
+            <lu><img src={iconoTerraria} alt='Terraria'/></lu>
+                
+                <lu>Nombre: Terraria</lu>
         </div>
     )
 }
 function Card2(){
     return(
         <div className="card2Div">
-            <img src="" alt="" />
+            <lu><img src={iconoMinecraft} alt='Minecraft'/></lu>
             
-                <li>Nombre: Jorge Golozo</li>
-                <li>Edad: 19 añotes</li>
-                <li>Color: Rojo</li>
+                <lu>Nombre: Minecraft</lu>
         </div>
     )
 }
 function Card3(){
     return(
         <div className="card3Div">
-            <img src="" alt="" />
-            
-                <li>Nombre: Pablito Pitagoras</li>
-                <li>Edad: 199 añotes</li>
-                <li>Color: CafeGood</li>
+            <lu><img src={iconoRimWorld} alt='Rimworld'/></lu>
+                
+                <lu>Nombre: RimWorld</lu>
         </div>
     )
 }
