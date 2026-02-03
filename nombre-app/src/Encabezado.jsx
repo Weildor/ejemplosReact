@@ -1,4 +1,4 @@
-import miImagen from './assets/logo.png';
+import miImagen from './assets/logo2.png';
 import iconoFacebook from './assets/redes/facebook.png';
 import iconoInstagram from './assets/redes/instagram.png';
 import iconoWhatsApp from './assets/redes/whatsApp.png';
@@ -18,7 +18,7 @@ function Encabezado(){
 function Logotipo(){
     return(
         <div className='logoDiv'>
-            <img src={miImagen} alt='assets/logo.png'/>
+            <img src={miImagen} alt='assets/logo2.png'/>
         </div>
     )
 }

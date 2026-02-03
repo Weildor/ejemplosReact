@@ -9,7 +9,7 @@ function App(){
     <div>
       <Encabezado/>
       <Expresiones/>
-      <Texto/>
+      <Texto name='Dorian'/>
       <Footer/>
     </div>
   )

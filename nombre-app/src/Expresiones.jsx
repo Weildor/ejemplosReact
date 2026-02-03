@@ -14,16 +14,34 @@ function Expresiones(){
         </div>
     )
 }
+function ContenedorCards(){
+    return(
+        <div className='ContenedorCardsDiv'>
+            <Tarjeta name='Eutiquio' descripcion='El pro es pro porque le sabe del pro'/>
+
+        </div>
+    )
+}
+function Tarjeta(props){
+    return(
+        <div className='CardDiv'>
+            <img src={iconoTerraria} alt="Terraria" />
+            <h2>{props.name}</h2>
+            <p>{props.descripcion}</p>
+            <a href="#">Leer mas</a>
+        </div>
+    )
+}
 function Cuerpo(){
     return(
         <div className='cuerpoDiv'>
-            <Card1/>
+            <Tarjeta/>
             <Card2/>
             <Card3/>
         </div>
     )
 }
-function Card1(){
+/*function Card1(){
     return(
         <div className="card1Div">
             <lu><img src={iconoTerraria} alt='Terraria'/></lu>
@@ -31,7 +49,7 @@ function Card1(){
                 <h2>Terraria</h2>
         </div>
     )
-}
+}*/
 function Card2(){
     return(
         <div className="card2Div">
@@ -48,6 +66,11 @@ function Card3(){
                 
                 <h2>RimWorld</h2>
         </div>
+    )
+}
+function Saludar(){
+    return(
+        <div>Hola Ternicolas</div>
     )
 }
 
