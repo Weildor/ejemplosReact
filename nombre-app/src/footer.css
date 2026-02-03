@@ -1,0 +1,12 @@
+.pie{
+    background-color: rgb(47, 23, 70);
+    color: white;
+    border-radius: 15px;
+    margin-top: 15px;
+    display: flex;
+    padding: 10px;
+    height: 40px;
+    vertical-align: middle;
+    text-align: justify;
+    justify-content: space-around;
+}

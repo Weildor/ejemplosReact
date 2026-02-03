@@ -1,13 +1,16 @@
+import './App.css'
 import Encabezado from "./Encabezado"
 import Expresiones from "./Expresiones"
+import Texto from "./Texto"
+import Footer from "./Footer"
 
 function App(){
   return (
     <div>
       <Encabezado/>
       <Expresiones/>
-      <h1>5C DSM</h1>
-      <h2>Victor Dorian Barrios Franco</h2>
+      <Texto/>
+      <Footer/>
     </div>
   )
 }

@@ -1,0 +1,9 @@
+.textoDiv{
+    margin-top: 15px;
+    padding: 30px;
+    background-color: #000000;
+    color: white;
+    border-radius: 10px;
+    height: 200px;
+    background-image: url(assets/text/textoFondo.jpg);
+}

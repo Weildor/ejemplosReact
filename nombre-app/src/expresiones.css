@@ -1,5 +1,4 @@
 .cuerpoDiv{
-    background-color: Black;
     margin: 25px;
     display: flex;
     gap: 10%;
@@ -9,7 +8,6 @@
 }
 .card1Div{
     display: flexbox;
-    background-color: White;
     font-family: 'Courier New', Courier, monospace;
     padding: auto;
     height: auto;
@@ -20,9 +18,19 @@
     /*margin-left: 25%;*/
     
 }
+.card1Div img{
+    vertical-align: middle;
+    width: 290px;
+    border-radius: 20px;
+}
+h2{
+    color: grey;
+}
+h2:hover{
+    color: rgb(53, 53, 53);
+}
 .card2Div{
     display: flexbox;
-    background-color: White;
     font-family: 'Courier New', Courier, monospace;
     padding: auto;
     height: auto;
@@ -31,9 +39,13 @@
     text-align: center;
     align-items: center;
 }
-.card3Div div lu{
+.card2Div img{
+    width: 250px;
+    height: 180px;
+    border-radius: 20px;
+}
+.card3Div{
     display: flexbox;
-    background-color: White;
     font-family: 'Courier New', Courier, monospace;
     padding: auto;
     height: auto;
@@ -41,4 +53,9 @@
     border-radius: 6px;
     text-align: center;
     align-items: center;
+}
+.card3Div img{
+    width: 250px;
+    height: 180px;
+    border-radius: 20px;
 }
