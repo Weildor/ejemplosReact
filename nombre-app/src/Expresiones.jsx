@@ -1,8 +1,8 @@
-import iconoTerraria from './assets/imgcard/terraria.png';
-import iconoKenshi from './assets/imgcard/kenshi.png';
-import iconoRimWorld from './assets/imgcard/rimworld.png';
-import './Expresiones.css';
-function Expresiones(){
+import iconoTerraria from './assets/imgcard/terraria.png'
+import iconoKenshi from './assets/imgcard/kenshi.png'
+import './Expresiones.css'
+import PropTypes from 'prop-types';
+/*function Expresiones(){
     const nombre = 'Porkemon';
     const apellidos = 'Legostrada Castillo';
     return(
@@ -14,6 +14,55 @@ function Expresiones(){
         </div>
     )
 }
+*/
+function Expresiones({vista}){
+    const vistas={
+        Inicio: <Inicio/>,
+        AcercaDe: <AcercaDe/>,
+        Productos: <Productos/>,
+        Sucursales: <Sucursales/>,
+        Contactos: <Contactos/>
+    }
+    return(
+        <div className='ExpresionesDiv'>
+            {vistas[vista] || <Inicio/>}
+            </div>
+    )
+}
+/*
+function ContenedorTarjetas({vista}){
+    const vistas={
+        Inicio: <Inicio/>,
+        AcercaDe: <AcercaDe/>,
+        Productos: <Productos/>,
+        Sucursales: <Sucursales/>,
+        Contacto: <Contacto/>
+
+    }
+}
+    */
+function Inicio() {
+    return(
+        <>
+            <TarjetaComponent />
+            <TarjetaComponent2 />
+            <TarjetaComponent />
+        </>
+    );
+}
+function AcercaDe(){
+    return <h2>Acerca de nosotros</h2>;
+}
+function Productos(){
+    return <h2>Productos</h2>;
+}
+function Sucursales(){
+    return <h2>Sucursales</h2>;
+}
+function Contactos(){
+    return <h2>Contactos</h2>;
+}
+/*
 function ContenedorCards(){
     return(
         <div className='ContenedorCardsDiv'>
@@ -22,6 +71,29 @@ function ContenedorCards(){
         </div>
     )
 }
+*/
+function TarjetaComponent(){
+    return(
+        <div className='TarjetaDiv'>
+            <img src={iconoTerraria} alt="Terraria" />
+            <h2>TituloPrueba</h2>
+            <p>propsdescripcion</p>
+            <a href="#">Ver mas</a>
+        </div>
+    )
+}
+function TarjetaComponent2(){
+    return(
+        <div className='TarjetaDiv'>
+            <img src={iconoKenshi} alt="Kenshi" />
+            <h2>TituloPrueba</h2>
+            <p>propsdescripcion</p>
+            <a href="#">Ver mas</a>
+        </div>
+    )
+}
+
+/*
 function Tarjeta(props){
     return(
         <div className='CardDiv'>
@@ -32,6 +104,8 @@ function Tarjeta(props){
         </div>
     )
 }
+*/
+/*
 function Cuerpo(){
     return(
         <div className='cuerpoDiv'>
@@ -41,7 +115,7 @@ function Cuerpo(){
         </div>
     )
 }
-/*function Card1(){
+function Card1(){
     return(
         <div className="card1Div">
             <lu><img src={iconoTerraria} alt='Terraria'/></lu>
@@ -49,7 +123,9 @@ function Cuerpo(){
                 <h2>Terraria</h2>
         </div>
     )
-}*/
+}
+
+
 function Card2(){
     return(
         <div className="card2Div">
@@ -68,11 +144,16 @@ function Card3(){
         </div>
     )
 }
+/*
 function Saludar(){
     return(
         <div>Hola Ternicolas</div>
     )
 }
+*/
+Expresiones.propTypes = {
+    vista: PropTypes.string.isRequired
+};
 
 
 
