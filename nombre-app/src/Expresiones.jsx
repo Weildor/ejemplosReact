@@ -1,5 +1,6 @@
 import iconoTerraria from './assets/imgcard/terraria.png'
 import iconoKenshi from './assets/imgcard/kenshi.png'
+import iconoRimWorld from './assets/imgcard/rimworld.png'
 import './Expresiones.css'
 import PropTypes from 'prop-types';
 /*function Expresiones(){
@@ -43,11 +44,13 @@ function ContenedorTarjetas({vista}){
     */
 function Inicio() {
     return(
+        <div className='InicioDiv'>
         <>
             <TarjetaComponent />
             <TarjetaComponent2 />
-            <TarjetaComponent />
+            <TarjetaComponent3 />
         </>
+        </div>
     );
 }
 function AcercaDe(){
@@ -74,7 +77,7 @@ function ContenedorCards(){
 */
 function TarjetaComponent(){
     return(
-        <div className='TarjetaDiv'>
+        <div className='card1Div'>
             <img src={iconoTerraria} alt="Terraria" />
             <h2>TituloPrueba</h2>
             <p>propsdescripcion</p>
@@ -84,8 +87,18 @@ function TarjetaComponent(){
 }
 function TarjetaComponent2(){
     return(
-        <div className='TarjetaDiv'>
+        <div className='card2Div'>
             <img src={iconoKenshi} alt="Kenshi" />
+            <h2>TituloPrueba</h2>
+            <p>propsdescripcion</p>
+            <a href="#">Ver mas</a>
+        </div>
+    )
+}
+function TarjetaComponent3(){
+    return(
+        <div className='card3Div'>
+            <img src={iconoRimWorld} alt="Rimworld" />
             <h2>TituloPrueba</h2>
             <p>propsdescripcion</p>
             <a href="#">Ver mas</a>
