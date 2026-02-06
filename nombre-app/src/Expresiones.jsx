@@ -55,6 +55,7 @@ function Inicio() {
 }
 function AcercaDe(){
     return <h2>Acerca de nosotros</h2>;
+    
 }
 function Productos(){
     return <h2>Productos</h2>;
@@ -79,8 +80,8 @@ function TarjetaComponent(){
     return(
         <div className='card1Div'>
             <img src={iconoTerraria} alt="Terraria" />
-            <h2>TituloPrueba</h2>
-            <p>propsdescripcion</p>
+            <h2>Terraria</h2>
+            <p>2D</p>
             <a href="#">Ver mas</a>
         </div>
     )
@@ -89,8 +90,8 @@ function TarjetaComponent2(){
     return(
         <div className='card2Div'>
             <img src={iconoKenshi} alt="Kenshi" />
-            <h2>TituloPrueba</h2>
-            <p>propsdescripcion</p>
+            <h2>Kenshi</h2>
+            <p>3D</p>
             <a href="#">Ver mas</a>
         </div>
     )
@@ -99,8 +100,8 @@ function TarjetaComponent3(){
     return(
         <div className='card3Div'>
             <img src={iconoRimWorld} alt="Rimworld" />
-            <h2>TituloPrueba</h2>
-            <p>propsdescripcion</p>
+            <h2>Rimworld</h2>
+            <p>4D</p>
             <a href="#">Ver mas</a>
         </div>
     )

@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 20px;
-    background-color: rgb(49, 5, 70);
+    background: linear-gradient(to bottom, rgb(49, 5, 70), rgb(168, 11, 0));
     align-items: center; 
     color: black;
 }

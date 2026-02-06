@@ -22,9 +22,18 @@
     vertical-align: middle;
     width: 290px;
     border-radius: 20px;
+    display: inline-block;
+    transition: transform 0.3s ease; 
+}
+.card1Div img:hover {
+    /* ESTO ES LO QUE LO HACE CRECER */
+    /* 1.0 es el tamaño normal. 1.1 es un 10% más grande. 1.2 es 20%, etc. */
+    transform: scale(1.1); 
+    cursor: pointer; /* Cambia el cursor a una manita */
 }
 h2{
     color: grey;
+    cursor: crosshair;
 }
 h2:hover{
     color: rgb(53, 53, 53);
@@ -43,6 +52,14 @@ h2:hover{
     width: 250px;
     height: 180px;
     border-radius: 20px;
+    display: inline-block;
+    transition: transform 0.3s ease; 
+}
+.card2Div img:hover {
+    /* ESTO ES LO QUE LO HACE CRECER */
+    /* 1.0 es el tamaño normal. 1.1 es un 10% más grande. 1.2 es 20%, etc. */
+    transform: scale(1.1); 
+    cursor: pointer; /* Cambia el cursor a una manita */
 }
 .card3Div{
     display: flexbox;
@@ -58,4 +75,12 @@ h2:hover{
     width: 250px;
     height: 180px;
     border-radius: 20px;
+    display: inline-block;
+    transition: transform 0.3s ease; 
+}
+.card3Div img:hover {
+    /* ESTO ES LO QUE LO HACE CRECER */
+    /* 1.0 es el tamaño normal. 1.1 es un 10% más grande. 1.2 es 20%, etc. */
+    transform: scale(1.1); 
+    cursor: pointer; /* Cambia el cursor a una manita */
 }

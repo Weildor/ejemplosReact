@@ -3,12 +3,14 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
+    border-radius: 20px;
     
 }
 .logoDiv{
     display: inline-block;
     padding: 0px 40px;
     background-color: rgb(3, 2, 58);
+    border-radius: 20px;
 }
 .logoDiv img{
     width: 150px;
