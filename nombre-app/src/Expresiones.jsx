@@ -3,6 +3,9 @@ import iconoKenshi from './assets/imgcard/kenshi.png'
 import iconoRimWorld from './assets/imgcard/rimworld.png'
 import './Expresiones.css'
 import PropTypes from 'prop-types';
+import AcercaDe from './AcercaDe';
+import Productos from './Productos';
+import Contactos from './Contactos';
 /*function Expresiones(){
     const nombre = 'Porkemon';
     const apellidos = 'Legostrada Castillo';
@@ -18,11 +21,11 @@ import PropTypes from 'prop-types';
 */
 function Expresiones({vista}){
     const vistas={
-        Inicio: <Inicio/>,
-        AcercaDe: <AcercaDe/>,
-        Productos: <Productos/>,
-        Sucursales: <Sucursales/>,
-        Contactos: <Contactos/>
+        Inicio: <Inicio />,
+        AcercaDe: <AcercaDe />,
+        Productos: <Productos />,
+        Sucursales: <Sucursales />,
+        Contactos: <Contactos />
     }
     return(
         <div className='ExpresionesDiv'>
@@ -53,19 +56,22 @@ function Inicio() {
         </div>
     );
 }
+/*
 function AcercaDe(){
-    return <h2>Acerca de nosotros</h2>;
-    
+    return <h2>Acerca de nosotros</h2>;   
 }
 function Productos(){
     return <h2>Productos</h2>;
 }
+    */
 function Sucursales(){
     return <h2>Sucursales</h2>;
 }
+/*
 function Contactos(){
     return <h2>Contactos</h2>;
 }
+    */
 /*
 function ContenedorCards(){
     return(
