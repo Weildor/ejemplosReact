@@ -1,0 +1,66 @@
+.contenedor-sucursales {
+    padding: 40px;
+    color: white;
+    text-align: center;
+}
+
+.titulo-sucursales {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #007bff;
+}
+
+.grid-sucursales {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tarjeta-sucursal {
+    background-color: #2d2d2d;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 5px solid #007bff;
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.tarjeta-sucursal:hover {
+    transform: scale(1.03);
+    background-color: #3d3d3d;
+}
+
+.tarjeta-sucursal h3 {
+    margin-top: 0;
+    color: #007bff;
+}
+
+.btn-mapa {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    background-color: transparent;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-mapa:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.mapa-placeholder {
+    margin-top: 40px;
+    height: 200px;
+    background-color: #1a1a1a;
+    border: 2px dashed #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+}

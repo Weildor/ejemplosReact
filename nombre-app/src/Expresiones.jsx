@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import AcercaDe from './AcercaDe';
 import Productos from './Productos';
 import Contactos from './Contactos';
+import Sucursales from './Sucursales';
 /*function Expresiones(){
     const nombre = 'Porkemon';
     const apellidos = 'Legostrada Castillo';
@@ -24,8 +25,8 @@ function Expresiones({vista}){
         Inicio: <Inicio />,
         AcercaDe: <AcercaDe />,
         Productos: <Productos />,
-        Sucursales: <Sucursales />,
-        Contactos: <Contactos />
+        Contactos: <Contactos />,
+        Sucursales: <Sucursales />
     }
     return(
         <div className='ExpresionesDiv'>
@@ -64,6 +65,7 @@ function Productos(){
     return <h2>Productos</h2>;
 }
     */
+   /*
 function Sucursales(){
     return <h2>Sucursales</h2>;
 }
