@@ -1,5 +1,7 @@
+import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps'; 
 import './texto.css'
 function Texto(props) {
+    const position = { lat: 19.4326, lng: -99.1332 };
     let user = props
     console.info(user)
     if(user.name!=""){
