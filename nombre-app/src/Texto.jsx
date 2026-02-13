@@ -1,4 +1,4 @@
-import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps'; 
+import Mapa from "./Mapa";
 import './texto.css'
 function Texto(props) {
     const position = { lat: 19.4326, lng: -99.1332 };
@@ -6,9 +6,10 @@ function Texto(props) {
     console.info(user)
     if(user.name!=""){
     return (
-        <div className="textoDiv">
-            <h3>Disfruta tu vida</h3>
-            <p>Esta seccion se da a conocer la informacion</p>
+        <div>
+            <Mapa lat={20.27663846986147}
+             lng={-97.96362794025488} nombre="Sucursal Ciudad de México" 
+            />
         </div>
     )
     }
