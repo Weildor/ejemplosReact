@@ -1,0 +1,33 @@
+.divClima {
+    /* Forma de la tarjeta */
+    background-color: #000000; /* Fondo negro como tus otras tarjetas */
+    color: white;              /* Texto blanco para leerse bien */
+    width: 300px;              /* Un ancho fijo para que se vea ordenado */
+    padding: 20px;             /* Espacio interior para que el texto no toque los bordes */
+    margin: 20px auto;         /* Auto a los lados lo centra en la pantalla */
+    
+    /* Bordes y Estilo */
+    border: 3px solid rgb(214, 61, 15); /* El borde naranja/rojo de tu menú hover */
+    border-radius: 15px;       /* Bordes redondeados modernos */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5); /* Sombra para darle profundidad */
+    
+    /* Alineación del texto */
+    text-align: center;
+    font-family: sans-serif;   /* Fuente limpia */
+
+    /* Animación (Lo que aprendimos antes) */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto al pasar el mouse */
+.divClima:hover {
+    transform: scale(1.05); /* Crece un poquito */
+    box-shadow: 0px 0px 25px rgb(214, 61, 15); /* La sombra se ilumina de naranja */
+    cursor: pointer;
+}
+
+/* Estilos para el texto dentro (Opcional si quieres separar más) */
+.divClima p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+}

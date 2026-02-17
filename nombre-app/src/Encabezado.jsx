@@ -6,12 +6,14 @@ import iconoTwitter from './assets/redes/twitter.png';
 import iconoGmail from './assets/redes/gmail.png';
 import './Encabezado.css';
 import PropTypes from 'prop-types';
+import Clima from './Clima';
 function Encabezado({cambiarVista}){
     return(
         <div className='encabezadoDiv'>
             <Logotipo />
             <Menu cambiarVista={cambiarVista}/>
             <Redes/>
+            
         </div>
     )
 
@@ -46,6 +48,7 @@ function Redes(){
                 <li><img src={iconoTwitter} alt='Twitter'/></li>
                 <li><img src={iconoGmail} alt='Gmail'/></li>
             </ul>
+            <Clima/>
         </div>
     )
 }
