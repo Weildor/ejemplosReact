@@ -1,55 +1,83 @@
-.ContenedorProductos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-    padding: 40px;
-    background-color: #1a1a1a; /* Fondo oscuro tipo gaming */
-    /*background-color: #1a1a1a23; /* Color bajito */
-    border-radius: 20px;
-}
-
-.CardProducto {
-    background: #2d2d2d;
-    border-radius: 15px;
+.contenedor-principal {
+    background-color: #121212;
     padding: 20px;
-    text-align: center;
-    border: 1px solid #444;
-    transition: transform 0.3s ease;
+    color: white;
 }
 
-.CardProducto:hover {
+.productos-header h1 {
+    color: #007bff;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.grid-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tarjeta-producto {
+    background-color: #2d2d2d;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+    border: 1px solid #444;
+}
+
+.tarjeta-producto:hover {
     transform: translateY(-10px);
     border-color: #007bff;
 }
 
-.CajaLogo {
-    height: 120px;
+.imagen-wrapper {
+    height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: white; /* La API tiene fondos blancos en las fotos */
+    border-radius: 10px;
     margin-bottom: 15px;
 }
 
-.CajaLogo img {
-    max-width: 100%;
+.imagen-wrapper img {
     max-height: 100%;
+    max-width: 100%;
     object-fit: contain;
 }
 
-.InfoBajo {
-    border-top: 1px solid #444;
-    padding-top: 10px;
-}
-
-.Etiqueta {
+.categoria {
     color: #888;
     font-size: 0.8rem;
     text-transform: uppercase;
 }
 
-.PrecioTexto {
-    color: #2ecc71; /* Verde esmeralda */
-    font-size: 1.4rem;
+.precio {
+    color: #28a745;
     font-weight: bold;
-    margin: 5px 0 0 0;
+    font-size: 1.4rem;
+    margin: 10px 0;
+}
+
+.descripcion {
+    font-size: 0.9rem;
+    color: #ccc;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Corta el texto a 2 líneas */
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
+
+.btn-carrito {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: auto;
 }

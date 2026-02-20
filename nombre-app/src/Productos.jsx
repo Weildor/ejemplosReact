@@ -1,7 +1,66 @@
-import React from 'react';
-import './Productos.css';
+import api from "./Services/api";
+import { useEffect, useState } from 'react';
+import './Productos.css'; // ¡Descomentado para que se vea bien!
 
 function Productos() {
+    const [productos, setProductos] = useState([]);
+    const [loading, setLoading] = useState(true); // Cambiado [true] a true
+
+    useEffect(() => {
+        const obtenerProductos = async () => {
+            try {
+                const response = await api.get("/products");
+                setProductos(response.data);
+            } catch (error) {
+                console.error("Error al obtener productos:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        obtenerProductos();
+    }, []);
+
+    if (loading) return <p className="cargando">Cargando catálogo de juegos...</p>;
+
+    // AGREGAMOS EL RETURN AQUÍ
+    return (
+        <div className="contenedor-principal">
+            <header className="productos-header">
+                <h1>Nuestros Productos</h1>
+            </header>
+            
+            <main className="grid-productos">
+                {productos.map((producto) => (
+                    <article key={producto.id} className="tarjeta-producto">
+                        <div className="imagen-wrapper">
+                            <img 
+                                src={producto.image} 
+                                alt={producto.title} 
+                            />
+                        </div>
+                        <div className="info-producto">
+                            <span className="categoria">{producto.category}</span>
+                            {/* FakeStoreAPI usa .title, no .name */}
+                            <h2>{producto.title}</h2> 
+                            <p className="descripcion">{producto.description}</p>
+                            <p className="precio">${producto.price}</p>
+                            <button className="btn-carrito">
+                                Añadir al carrito
+                            </button>
+                        </div>
+                    </article>
+                ))}            
+            </main>
+        </div>
+    );
+}
+
+
+
+
+
+/*function Productos() {
+
     const listaProductos = [
     { id: 1, url: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/105600/header.jpg", precio: "$9.99" }, // Terraria
     { id: 2, url: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/header.jpg", precio: "$29.99" }, // GTA V
@@ -29,5 +88,6 @@ function Productos() {
         </div>
     );
 }
+*/
 
 export default Productos;
