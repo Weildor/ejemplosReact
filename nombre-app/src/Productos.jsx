@@ -1,6 +1,7 @@
 import api from "./Services/api";
 import { useEffect, useState } from 'react';
 import './Productos.css'; // ¡Descomentado para que se vea bien!
+import RegistrarProductos from "./RegistrarProductos";
 
 function Productos() {
     const [productos, setProductos] = useState([]);
@@ -24,7 +25,9 @@ function Productos() {
 
     // AGREGAMOS EL RETURN AQUÍ
     return (
+        
         <div className="contenedor-principal">
+            <RegistrarProductos/>
             <header className="productos-header">
                 <h1>Nuestros Productos</h1>
             </header>
