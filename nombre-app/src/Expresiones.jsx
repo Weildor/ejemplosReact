@@ -7,6 +7,7 @@ import AcercaDe from './AcercaDe';
 import Productos from './Productos';
 import Contactos from './Contactos';
 import Sucursales from './Sucursales';
+import Usuarios from './Usuarios';
 /*function Expresiones(){
     const nombre = 'Porkemon';
     const apellidos = 'Legostrada Castillo';
@@ -26,7 +27,8 @@ function Expresiones({vista}){
         AcercaDe: <AcercaDe />,
         Productos: <Productos />,
         Contactos: <Contactos />,
-        Sucursales: <Sucursales />
+        Sucursales: <Sucursales />,
+        Usuarios: <Usuarios />
     }
     return(
         <div className='ExpresionesDiv'>
