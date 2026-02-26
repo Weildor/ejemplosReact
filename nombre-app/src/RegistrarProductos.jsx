@@ -44,7 +44,7 @@ const handleSubmit = async (e) => {
                     type="text"
                     placeholder="Descripcion"
                     value={description}
-                    onChange={(e) => setPrice(e.target.value)}
+                    onChange={(e) => setDescription(e.target.value)}
                 />
                 <input
                     type="text"

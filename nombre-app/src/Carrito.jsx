@@ -1,6 +1,7 @@
 import api from "./Services/api";
 import { useEffect, useState } from 'react';
 import './carrito.css';
+import RegistrarCarrito from "./RegistrarCarrito";
 
 function Carrito() {
     const [carritos, setCarritos] = useState([]);
@@ -24,6 +25,7 @@ function Carrito() {
 
     return (
         <div className="contenedor-carrito">
+            <RegistrarCarrito/>
             <header className="carrito-header">
                 <h1>Órdenes de Compra</h1>
             </header>

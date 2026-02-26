@@ -1,6 +1,7 @@
 import api from "./Services/api";
 import { useEffect, useState } from 'react';
 import './Usuarios.css';
+import RegistrarUsuarios from "./RegistrarUsuarios";
 
 function Usuarios() {
     const [usuarios, setUsuarios] = useState([]);
@@ -24,6 +25,7 @@ function Usuarios() {
 
     return (
         <div className="contenedor-usuarios">
+            <RegistrarUsuarios/>
             <header className="usuarios-header">
                 <h1>Gestión de Usuarios</h1>
             </header>

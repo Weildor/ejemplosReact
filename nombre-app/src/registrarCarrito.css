@@ -1,0 +1,108 @@
+/* Contenedor principal para centrar el formulario */
+.contenedor-contacto {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    padding: 20px;
+    background-color: #121212; /* Fondo muy oscuro */
+    border-radius: 20px;
+}
+
+/* Caja del formulario */
+.formulario-contacto {
+    background-color: #1e1e1e;
+    padding: 40px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid #333;
+}
+
+.formulario-contacto h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 10px;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 1px;
+}
+
+/* Estilo para los campos de texto y el textarea */
+.formulario-contacto input, 
+.formulario-contacto textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: #2a2a2a;
+    color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+/* Efecto cuando haces clic en un input */
+.formulario-contacto input:focus, 
+.formulario-contacto textarea:focus {
+    outline: none;
+    border-color: #007bff; /* Color azul al enfocar */
+    background-color: #333;
+}
+
+/* Área de mensaje */
+.formulario-contacto textarea {
+    resize: none;
+    height: 120px;
+}
+
+/* Botón de enviar */
+.formulario-contacto button {
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.formulario-contacto button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+/* Estilo del mensaje de éxito */
+.mensaje-exito {
+    background-color: #1e1e1e;
+    padding: 50px;
+    border-radius: 15px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.mensaje-exito h2 {
+    color: #2ecc71; /* Verde éxito */
+    margin-bottom: 15px;
+}
+
+.btn-volver {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-volver:hover {
+    background-color: #555;
+}
