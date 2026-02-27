@@ -50,6 +50,9 @@ function Productos() {
                             <button className="btn-carrito">
                                 Añadir al carrito
                             </button>
+                            <button className="btn-carrito" onClick={() => removeProducto(producto.id)}>
+                                Eliminar
+                            </button>
                         </div>
                     </article>
                 ))}            
@@ -57,6 +60,18 @@ function Productos() {
         </div>
     );
 }
+const removeProducto = async (productoId) => {
+    try {
+        const response = await api.delete(
+        `/users/${productoId}`
+        );
+        console.log(response.data);
+        alert('¡Usuario eliminado con exito!');
+
+    }catch (error) {
+        console.error(error);
+    }
+};
 
 
 
