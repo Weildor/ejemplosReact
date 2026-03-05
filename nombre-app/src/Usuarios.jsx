@@ -6,18 +6,20 @@ import RegistrarUsuarios from "./RegistrarUsuarios";
 function Usuarios() {
     const [usuarios, setUsuarios] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
+
+    const obtenerUsuarios = async () => {
+        try {
+             const response = await api.get("/users");
+                setUsuarios(response.data);
+        } catch (error) {
+            console.error("Error al obtener usuarios:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const obtenerUsuarios = async () => {
-            try {
-                const response = await api.get("/users");
-                setUsuarios(response.data);
-            } catch (error) {
-                console.error("Error al obtener usuarios:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
         obtenerUsuarios();
     }, []);
 
@@ -25,7 +27,12 @@ function Usuarios() {
 
     return (
         <div className="contenedor-usuarios">
-            <RegistrarUsuarios/>
+            <RegistrarUsuarios
+                usuarioEditando={usuarioSeleccionado}
+                limpiarSeleccion={() => setUsuarioSeleccionado(null)}
+                onActualizacionExitosa={obtenerUsuarios}
+            />
+            
             <header className="usuarios-header">
                 <h1>Gestión de Usuarios</h1>
             </header>
@@ -53,7 +60,7 @@ function Usuarios() {
                                 <td>{user.phone}</td>
                                 <td>{user.email}</td>
                                 <td className="acciones">
-                                    <button className="btn-editar">Editar</button>
+                                    <button className="btn-editar" onClick={() => setUsuarioSeleccionado(user)}>Editar</button>
                                     <button className="btn-eliminar" onClick={() => removeUsuario(user.id)}>Eliminar</button>
                                 </td>
                             </tr>

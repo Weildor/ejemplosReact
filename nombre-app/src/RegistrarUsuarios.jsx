@@ -1,15 +1,32 @@
+import { useEffect, useState } from 'react';
 import api from "./Services/api";
-import { useState } from 'react';
+import axios from 'axios';
 import './registrarUsuarios.css';
 
-function RegistrarUsuarios() {
+function RegistrarUsuarios({ usuarioEditando, limpiarSeleccion, onActualizacionExitosa}) {
     // Solo los estados requeridos según la documentación
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    useEffect(() => {
+        if (usuarioEditando) {
+            setUsername(usuarioEditando.username);
+            setEmail(usuarioEditando.email);
+            setPassword(''); // Normalmente la contraseña no se carga por seguridad
+        } else {
+            resetForm();
+        }
+    }, [usuarioEditando]);
+
+    const resetForm = () => {
+        setUsername('');
+        setEmail('');
+        setPassword('');
+    }
+
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); //Evita que la pagina se recargue
 
         // Objeto siguiendo el esquema de la imagen (id es generado por la API)
         const nuevoUsuario = {
@@ -19,9 +36,22 @@ function RegistrarUsuarios() {
         };
 
         try {
-            const respuesta = await api.post('/users', nuevoUsuario);
+            if (usuarioEditando) {
+                //Logica de actualizar (PUT)
+                const respuesta = await api.put(`/users/${usuarioEditando.id}`, nuevoUsuario);
+                console.log('Usuario actualizado:', respuesta.data);
+                alert('¡Usuario actualizado con exito!');
+                limpiarSeleccion(); //Limpia el estado en el padre
+            } else {
+                const respuesta = await api.post('/users', nuevoUsuario);
+                cconsole.log('Usuario registrado:', respuesta.data);
+                alert('¡Usuario guardado con exito!');
+            }
+
+            resetForm();
+            /*const respuesta = await api.post('/users', nuevoUsuario);
             console.log('Usuario registrado:', respuesta.data);
-            alert('¡Usuario creado con éxito! ID: ' + respuesta.data.id);
+            alert('¡Usuario creado con éxito! ID: ' + respuesta.data.id);*/
             
             // Limpiar campos
             setUsername(''); setEmail(''); setPassword('');
