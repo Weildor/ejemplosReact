@@ -6,18 +6,20 @@ import RegistrarCarrito from "./RegistrarCarrito";
 function Carrito() {
     const [carritos, setCarritos] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [carritoSeleccionado, setCarritoSeleccionado] = useState(null);
 
-    useEffect(() => {
-        const obtenerCarritos = async () => {
-            try {
-                const response = await api.get("/carts");
+    
+    const obtenerCarritos = async () => {
+        try {
+            const response = await api.get("/carts");
                 setCarritos(response.data);
-            } catch (error) {
-                console.error("Error al obtener carritos:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        } catch (error) {
+            console.error("Error al obtener carritos:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
         obtenerCarritos();
     }, []);
 
@@ -25,7 +27,11 @@ function Carrito() {
 
     return (
         <div className="contenedor-carrito">
-            <RegistrarCarrito/>
+            <RegistrarCarrito
+                carritoEditando={carritoSeleccionado}
+                limpiarSeleccion={() => setCarritoSeleccionado(null)}
+                onActualizacionExitosa={obtenerCarritos}
+            />
             <header className="carrito-header">
                 <h1>Órdenes de Compra</h1>
             </header>
@@ -55,7 +61,7 @@ function Carrito() {
                         </div>
 
                         <div className="acciones-carrito">
-                            <button className="btn-editar">Editar Orden</button>
+                            <button className="btn-editar" onClick={() => setCarritoSeleccionado(cart)}>Editar Orden</button>
                             <button className="btn-eliminar" onClick={() => removeCarrito(cart.id)}>Cancelar</button>
                         </div>
                     </div>
@@ -68,7 +74,7 @@ function Carrito() {
 const removeCarrito = async (carritoId) => {
     try {
         const response = await api.delete(
-        `/users/${carritoId}`
+        `/carts/${carritoId}`
         );
         console.log(response.data);
         alert('¡Carrito cancelado con exito!');

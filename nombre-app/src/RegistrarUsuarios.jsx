@@ -44,7 +44,7 @@ function RegistrarUsuarios({ usuarioEditando, limpiarSeleccion, onActualizacionE
                 limpiarSeleccion(); //Limpia el estado en el padre
             } else {
                 const respuesta = await api.post('/users', nuevoUsuario);
-                cconsole.log('Usuario registrado:', respuesta.data);
+                console.log('Usuario registrado:', respuesta.data);
                 alert('¡Usuario guardado con exito!');
             }
 

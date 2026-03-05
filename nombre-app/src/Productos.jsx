@@ -6,18 +6,20 @@ import RegistrarProductos from "./RegistrarProductos";
 function Productos() {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true); // Cambiado [true] a true
+    const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
+    
+    const obtenerProductos = async () => {
+        try {
+            const response = await api.get("/products");
+            setProductos(response.data);
+        } catch (error) {
+            console.error("Error al obtener productos:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
-        const obtenerProductos = async () => {
-            try {
-                const response = await api.get("/products");
-                setProductos(response.data);
-            } catch (error) {
-                console.error("Error al obtener productos:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
         obtenerProductos();
     }, []);
 
@@ -27,7 +29,11 @@ function Productos() {
     return (
         
         <div className="contenedor-principal">
-            <RegistrarProductos/>
+            <RegistrarProductos
+                productoEditando={productoSeleccionado}
+                limpiarSeleccion={() => setProductoSeleccionado(null)}
+                onActualizacionExitosa={obtenerProductos}
+            />
             <header className="productos-header">
                 <h1>Nuestros Productos</h1>
             </header>
@@ -50,8 +56,13 @@ function Productos() {
                             <button className="btn-carrito">
                                 Añadir al carrito
                             </button>
+                            <br />
                             <button className="btn-carrito" onClick={() => removeProducto(producto.id)}>
                                 Eliminar
+                            </button>
+                            <br />
+                            <button className="btn-carrito" onClick={() => setProductoSeleccionado(producto)}>
+                                Editar Producto
                             </button>
                         </div>
                     </article>
@@ -63,10 +74,10 @@ function Productos() {
 const removeProducto = async (productoId) => {
     try {
         const response = await api.delete(
-        `/users/${productoId}`
+        `/products/${productoId}`
         );
         console.log(response.data);
-        alert('¡Usuario eliminado con exito!');
+        alert('¡Producto eliminado con exito!');
 
     }catch (error) {
         console.error(error);
