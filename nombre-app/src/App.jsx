@@ -4,13 +4,16 @@ import Expresiones from "./Expresiones"
 import Encabezado from "./Encabezado"
 import Texto from "./Texto"
 import Footer from "./Footer"
+import { AuthProvider } from './AuthContext';
 
 function App(){
   const [vista, setVista] = useState("Inicio");
   return (
     <div>
-      <Encabezado cambiarVista={setVista}/>
-      <Expresiones vista={vista}/>
+      <AuthProvider>
+        <Encabezado cambiarVista={setVista}/>
+        <Expresiones vista={vista}/>
+      </AuthProvider>
       <Texto name='Dorian'/>
       <Footer/>
     </div>

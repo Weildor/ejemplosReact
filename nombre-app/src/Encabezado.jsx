@@ -7,6 +7,7 @@ import iconoGmail from './assets/redes/gmail.png';
 import './Encabezado.css';
 import PropTypes from 'prop-types';
 import Clima from './Clima';
+import { useAuth } from './AuthContext';
 function Encabezado({cambiarVista}){
     return(
         <div className='encabezadoDiv'>
@@ -26,6 +27,7 @@ function Logotipo(){
     )
 }
 function Menu({cambiarVista}){
+    const { isLoggedIn } = useAuth;
     return(
         <div className='menuDiv'>
             <ul>
@@ -34,8 +36,17 @@ function Menu({cambiarVista}){
                 <li onClick={() => cambiarVista("Productos")}>Productos</li>
                 <li onClick={() => cambiarVista("Contactos")}>Contactos</li>
                 <li onClick={() => cambiarVista("Sucursales")}>Sucursales</li>
-                <li onClick={() => cambiarVista("Usuarios")}>Usuarios</li>
-                <li onClick={() => cambiarVista("Carrito")}>Carrito</li>
+                
+                {isLoggedIn ? (
+                <>
+                    <li onClick={() => cambiarVista("Usuarios")}>Usuarios</li>
+                    <li onClick={() => cambiarVista("Carrito")}>Carrito</li>
+                    <li> Cerrar Sesion</li>
+                </>
+                
+                    ) : (
+                <li onClick={() => cambiarVista("Login")}>Login</li>
+                )}
             </ul>
         </div>
     )
