@@ -23,7 +23,7 @@ import Login from './Login';
     )
 }
 */
-function Expresiones({vista}){
+function Expresiones(props){
     const vistas={
         Inicio: <Inicio />,
         AcercaDe: <AcercaDe />,
@@ -32,11 +32,11 @@ function Expresiones({vista}){
         Sucursales: <Sucursales />,
         Usuarios: <Usuarios />,
         Carrito: <Carrito />,
-        Login: <Login/>
+        Login: <Login />
     }
     return(
         <div className='ExpresionesDiv'>
-            {vistas[vista] || <Inicio/>}
+            {vistas[props.vista] || <Inicio/>}
             </div>
     )
 }

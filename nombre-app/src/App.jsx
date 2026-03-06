@@ -12,7 +12,7 @@ function App(){
     <div>
       <AuthProvider>
         <Encabezado cambiarVista={setVista}/>
-        <Expresiones vista={vista}/>
+        <Expresiones vista={vista} chVista={setVista}/>
       </AuthProvider>
       <Texto name='Dorian'/>
       <Footer/>
