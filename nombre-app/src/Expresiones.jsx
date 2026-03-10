@@ -9,6 +9,7 @@ import Contactos from './Contactos';
 import Sucursales from './Sucursales';
 import Usuarios from './Usuarios';
 import Carrito from './Carrito';
+import Categorias from './Categorias';
 import Login from './Login';
 /*function Expresiones(){
     const nombre = 'Porkemon';
@@ -32,6 +33,7 @@ function Expresiones(props){
         Sucursales: <Sucursales />,
         Usuarios: <Usuarios />,
         Carrito: <Carrito />,
+        Categorias: <Categorias />,
         Login: <Login chVista={props.chVista}/>
     }
     return(

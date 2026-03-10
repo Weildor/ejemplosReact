@@ -5,7 +5,7 @@ import RegistrarProductos from "./RegistrarProductos";
 
 function Productos() {
     const [productos, setProductos] = useState([]);
-    const [loading, setLoading] = useState(true); // Cambiado [true] a true
+    const [loading, setLoading] = useState(true);
     const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
     

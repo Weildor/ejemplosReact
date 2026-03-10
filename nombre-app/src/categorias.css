@@ -1,0 +1,71 @@
+.contenedor-menu {
+    padding: 40px 20px;
+    background-color: #121212;
+    min-height: 100vh;
+}
+
+.menu-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.grid-comida {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card-comida {
+    background: #1e1e1e;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #333;
+}
+
+.card-comida:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.comida-imagen img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: #252525;
+}
+
+.comida-info {
+    padding: 20px;
+    color: white;
+}
+
+.comida-info h3 {
+    margin: 0 0 10px 0;
+    color: #ffb703; /* Un color naranja apetitoso */
+}
+
+.comida-desc {
+    font-size: 0.9rem;
+    color: #ccc;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+.btn-ver-mas {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffb703;
+    border: none;
+    border-radius: 5px;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-ver-mas:hover {
+    background-color: #fb8500;
+}
