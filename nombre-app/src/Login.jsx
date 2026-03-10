@@ -27,12 +27,12 @@ const Login = ({chVista}) => {
             if (respuesta.data.token) {
                 login(respuesta.data.token); 
                 alert('Autentificación autorizada');
-                chVista("usuarios");
+                chVista("Usuarios");
             } else {
                 alert('Credenciales inválidas');
             }
         } catch (error) {
-            alert('Error al iniciar sesión. Revisa la consola.');
+            alert('Error', error);
             console.error("Error:", error);
         }
     };

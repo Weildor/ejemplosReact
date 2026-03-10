@@ -32,7 +32,7 @@ function Expresiones(props){
         Sucursales: <Sucursales />,
         Usuarios: <Usuarios />,
         Carrito: <Carrito />,
-        Login: <Login />
+        Login: <Login chVista={props.chVista}/>
     }
     return(
         <div className='ExpresionesDiv'>
