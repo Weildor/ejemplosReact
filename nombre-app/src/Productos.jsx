@@ -1,6 +1,6 @@
-import api from "./Services/api";
 import { useEffect, useState } from 'react';
-import './Productos.css'; // ¡Descomentado para que se vea bien!
+import api from "./Services/api";
+import './Productos.css';
 import RegistrarProductos from "./RegistrarProductos";
 
 function Productos() {
@@ -8,10 +8,10 @@ function Productos() {
     const [loading, setLoading] = useState(true);
     const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
-    
+    // 1. Corregimos la ruta a la de tu backend real
     const obtenerProductos = async () => {
         try {
-            const response = await api.get("/products");
+            const response = await api.get("/api/productos");
             setProductos(response.data);
         } catch (error) {
             console.error("Error al obtener productos:", error);
@@ -19,15 +19,27 @@ function Productos() {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         obtenerProductos();
     }, []);
 
-    if (loading) return <p className="cargando">Cargando catálogo de juegos...</p>;
+    // 2. Metemos la función dentro del componente para poder refrescar la lista al borrar
+    const removeProducto = async (productoId) => {
+        try {
+            // Tu ruta en backend para borrar es /api/producto/:id (en singular)
+            const response = await api.delete(`/api/producto/${productoId}`);
+            console.log("Producto eliminado");
+            alert('¡Producto eliminado con éxito!');
+            obtenerProductos(); // Refrescamos la lista automáticamente
+        } catch (error) {
+            console.error("Error al eliminar:", error);
+        }
+    };
 
-    // AGREGAMOS EL RETURN AQUÍ
+    if (loading) return <p className="cargando">Cargando catálogo de productos...</p>;
+
     return (
-        
         <div className="contenedor-principal">
             <RegistrarProductos
                 productoEditando={productoSeleccionado}
@@ -39,20 +51,24 @@ function Productos() {
             </header>
             
             <main className="grid-productos">
+                {/* 3. Adaptamos las variables a tu modelo (nombre, descripcion, precio) */}
                 {productos.map((producto) => (
                     <article key={producto.id} className="tarjeta-producto">
                         <div className="imagen-wrapper">
+                            {/* Tu backend aún no tiene imagen, ponemos una por defecto temporalmente */}
                             <img 
-                                src={producto.image} 
-                                alt={producto.title} 
+                                src={"https://placehold.co/200x200?text=Sin+Imagen"}
+                                //src={"https://via.placeholder.com/150?text=Sin+Imagen"}// 
+                                alt={producto.nombre} 
                             />
                         </div>
                         <div className="info-producto">
-                            <span className="categoria">{producto.category}</span>
-                            {/* FakeStoreAPI usa .title, no .name */}
-                            <h2>{producto.title}</h2> 
-                            <p className="descripcion">{producto.description}</p>
-                            <p className="precio">${producto.price}</p>
+                            <span className="categoria">Categoría ID: {producto.id_categoria}</span>
+                            <h2>{producto.nombre}</h2> 
+                            <p className="descripcion">{producto.descripcion}</p>
+                            <p className="precio">${producto.precio}</p>
+                            <p className="stock">Stock: {producto.stock}</p>
+                            
                             <button className="btn-carrito">
                                 Añadir al carrito
                             </button>
@@ -71,18 +87,8 @@ function Productos() {
         </div>
     );
 }
-const removeProducto = async (productoId) => {
-    try {
-        const response = await api.delete(
-        `/products/${productoId}`
-        );
-        console.log(response.data);
-        alert('¡Producto eliminado con exito!');
 
-    }catch (error) {
-        console.error(error);
-    }
-};
+
 
 
 

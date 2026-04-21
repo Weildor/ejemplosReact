@@ -1,105 +1,133 @@
 import api from "./Services/api";
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+
 import './registrarProductos.css';
 
-//API Metodo Post//
-//Agregar datos//
-function RegistrarProductos({ productoEditando, limpiarSeleccion, onActualizacionExitosa}) {
-const [title, setTitle] = useState('');
-const [price, setPrice] = useState('');
-const [description, setDescription] = useState('');
-const [category, setCategory] = useState('');
-const [image, setImage] = useState('');
 
-useEffect(() => {
+function RegistrarProductos({ productoEditando, limpiarSeleccion, onActualizacionExitosa}) {
+    // 1. Variables alineadas exactamente a tu base de datos MySQL
+    const [nombre, setNombre] = useState('');
+    const [precio, setPrecio] = useState('');
+    const [descripcion, setDescripcion] = useState('');
+    const [idCategoria, setIdCategoria] = useState('');
+    const [stock, setStock] = useState('');
+
+    useEffect(() => {
         if (productoEditando) {
-            setTitle(productoEditando.title || '');
-            setPrice(productoEditando.price || '');
-            setDescription(productoEditando.description) || '';
-            setCategory(productoEditando.category || '');
-            setImage(productoEditando.image || '');
+            setNombre(productoEditando.nombre || '');
+            setPrecio(productoEditando.precio || '');
+            setDescripcion(productoEditando.descripcion || '');
+            setIdCategoria(productoEditando.id_categoria || '');
+            setStock(productoEditando.stock || '');
         } else {
             resetForm();
         }
     }, [productoEditando]);
 
     const resetForm = () => {
-        setTitle('');
-        setPrice('');
-        setDescription('');
-        setCategory('');
-        setImage('');
+        setNombre('');
+        setPrecio('');
+        setDescripcion('');
+        setIdCategoria('');
+        setStock('');
     }
 
-const handleSubmit = async (e) => {
-    e.preventDefault();
-    const nuevoProducto = { title, price, description, category, image };
-    try{
-        if (productoEditando) {
-            //Logica de actualizar (PUT)
-                const respuesta = await api.put(`/products/${productoEditando.id}`, nuevoProducto);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        // 2. Construimos el objeto con los nombres que espera tu backend
+        const nuevoProducto = { 
+            nombre: nombre, 
+            precio: precio, 
+            descripcion: descripcion, 
+            id_categoria: idCategoria, 
+            stock: stock 
+        };
+
+        try {
+            if (productoEditando) {
+                // Lógica de actualizar (PUT) a la ruta correcta en singular
+                const respuesta = await api.put(`/api/producto/${productoEditando.id}`, nuevoProducto);
                 console.log('Producto actualizado:', respuesta.data);
-                alert('¡Producto actualizado con exito!');
-                limpiarSeleccion(); //Limpia el estado en el padre
+                alert('¡Producto actualizado con éxito!');
+                limpiarSeleccion(); 
             } else {
-                const respuesta = await api.post('/products', nuevoProducto);
+                // Lógica de crear (POST) a la ruta correcta en plural
+                const respuesta = await api.post('/api/productos', nuevoProducto);
                 console.log('Producto registrado:', respuesta.data);
-                alert('¡Producto guardado con exito!');
+                alert('¡Producto guardado con éxito!');
             }
 
             resetForm();
-        /*const respuesta = await api.post('/products', nuevoProducto);
-        console.log('Producto registrado:', respuesta.data);
-        alert('¡Producto guardado con exito!');
-        */
-       setTitle(''); setPrice(''); setDescription(''); setCategory(''); setImage('');
-    }catch (error) {
-        console.error('Error al registrar producto:', error);
-        alert('Error al crear el producto.');
+            
+            // 3. Ejecutamos esta función para que la lista de abajo se actualice solita
+            if (onActualizacionExitosa) {
+                onActualizacionExitosa();
+            }
+
+        } catch (error) {
+            console.error('Error al registrar/actualizar producto:', error);
+            alert('Error al guardar el producto.');
+        }
     }
 
-}
     return (
         <div>
-            <h2>Registrar Producto</h2>
+            {/* Título dinámico para saber si estamos editando o creando */}
+            <h2>{productoEditando ? "Editar Producto" : "Registrar Producto"}</h2>
+            
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
-                    placeholder="Titulo"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Nombre del producto"
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                    required
                 />
                 <input
                     type="number"
                     placeholder="Precio"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
+                    value={precio}
+                    onChange={(e) => setPrecio(e.target.value)}
+                    required
                 />
                 <input
                     type="text"
-                    placeholder="Descripcion"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Descripción"
+                    value={descripcion}
+                    onChange={(e) => setDescripcion(e.target.value)}
+                    required
                 />
                 <input
-                    type="text"
-                    placeholder="Categoria"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
+                    type="number"
+                    placeholder="ID Categoría (Ej: 1)"
+                    value={idCategoria}
+                    onChange={(e) => setIdCategoria(e.target.value)}
+                    required
                 />
                 <input
-                    type="text"
-                    placeholder="Imagen"
-                    value={image}
-                    onChange={(e) => setImage(e.target.value)}
+                    type="number"
+                    placeholder="Stock disponible"
+                    value={stock}
+                    onChange={(e) => setStock(e.target.value)}
+                    required
                 />
-                <button type="submit">Registrar</button>
-
-
+                
+                <button type="submit">
+                    {productoEditando ? "Actualizar Producto" : "Registrar"}
+                </button>
+                
+                {/* Botón extra para cancelar si nos arrepentimos de editar */}
+                {productoEditando && (
+                    <button type="button" onClick={limpiarSeleccion} style={{marginTop: '10px', backgroundColor: 'gray'}}>
+                        Cancelar
+                    </button>
+                )}
             </form>
         </div>
     )
 
+
 }
-export default RegistrarProductos
+
+export default RegistrarProductos;
