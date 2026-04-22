@@ -8,20 +8,34 @@ function Carrito() {
     const [loading, setLoading] = useState(true);
     const [carritoSeleccionado, setCarritoSeleccionado] = useState(null);
 
-    
     const obtenerCarritos = async () => {
         try {
-            const response = await api.get("/carts");
-                setCarritos(response.data);
+            // 👇 Cambiamos a la ruta real de tu backend
+            const response = await api.get("/api/carritos");
+            setCarritos(response.data);
         } catch (error) {
             console.error("Error al obtener carritos:", error);
         } finally {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         obtenerCarritos();
     }, []);
+
+    const removeCarrito = async (carritoId) => {
+        try {
+            // 👇 Cambiamos a la ruta real de tu backend
+            const response = await api.delete(`/api/carrito/${carritoId}`);
+            console.log(response.data);
+            alert('¡Carrito cancelado con éxito!');
+            obtenerCarritos(); // Refrescamos la lista tras eliminar
+        } catch (error) {
+            console.error(error);
+            alert('Error al cancelar el carrito.');
+        }
+    };
 
     if (loading) return <p className="cargando">Cargando pedidos...</p>;
 
@@ -37,24 +51,25 @@ function Carrito() {
             </header>
 
             <div className="grid-carritos">
-                {/* PRIMER MAPEO: Los carritos (las órdenes) */}
                 {carritos.map((cart) => (
                     <div key={cart.id} className="card-carrito">
                         <div className="card-header-carrito">
                             <span>📦 Orden # {cart.id}</span>
-                            <span>👤 Usuario ID: {cart.userId}</span>
+                            {/* Verifica si tu BD devuelve userId o id_usuario */}
+                            <span>👤 Usuario ID: {cart.userId || cart.id_usuario}</span>
                         </div>
                         
                         <div className="card-body-carrito">
-                            <p className="fecha-orden">📅 Fecha: {new Date(cart.date).toLocaleDateString()}</p>
+                            {/* Verifica si tu BD devuelve date o fecha */}
+                            <p className="fecha-orden">📅 Fecha: {cart.date ? new Date(cart.date).toLocaleDateString() : 'Sin fecha'}</p>
                             
                             <h4>Productos en esta orden:</h4>
                             <ul className="lista-mini-productos">
-                                {/* SEGUNDO MAPEO: Los productos dentro de ese carrito */}
-                                {cart.products.map((item, index) => (
+                                {/* NOTA IMPORTANTE: Si tu backend no devuelve "products" anidados, esto aparecerá vacío hasta que ajustemos la consulta en Node */}
+                                {cart.products && cart.products.map((item, index) => (
                                     <li key={index} className="item-producto">
-                                        <span>🆔 Producto ID: {item.productId}</span>
-                                        <span className="cantidad">Cant: {item.quantity}</span>
+                                        <span>🆔 Producto ID: {item.productId || item.id_producto}</span>
+                                        <span className="cantidad">Cant: {item.quantity || item.cantidad}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -70,18 +85,5 @@ function Carrito() {
         </div>
     );
 }
-
-const removeCarrito = async (carritoId) => {
-    try {
-        const response = await api.delete(
-        `/carts/${carritoId}`
-        );
-        console.log(response.data);
-        alert('¡Carrito cancelado con exito!');
-
-    }catch (error) {
-        console.error(error);
-    }
-};
 
 export default Carrito;

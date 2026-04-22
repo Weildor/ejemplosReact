@@ -11,20 +11,18 @@ import Usuarios from './Usuarios';
 import Carrito from './Carrito';
 import Categorias from './Categorias';
 import Login from './Login';
-/*function Expresiones(){
-    const nombre = 'Porkemon';
-    const apellidos = 'Legostrada Castillo';
-    return(
-        <div>
-            
-            <Cuerpo/>
-            
-            
-        </div>
-    )
-}
-*/
+import { useAuth } from './AuthContext'; 
+
 function Expresiones(props){
+    const { isLoggedIn } = useAuth();
+    const vistasProtegidas = ["Usuarios", "Carrito", "Categorias"];
+
+    let vistaARenderizar = props.vista;
+
+    if (vistasProtegidas.includes(vistaARenderizar) && !isLoggedIn) {
+        vistaARenderizar = "Login";
+    }
+
     const vistas={
         Inicio: <Inicio />,
         AcercaDe: <AcercaDe />,
@@ -36,62 +34,24 @@ function Expresiones(props){
         Categorias: <Categorias />,
         Login: <Login chVista={props.chVista}/>
     }
+
     return(
         <div className='ExpresionesDiv'>
-            {vistas[props.vista] || <Inicio/>}
-            </div>
+            {vistas[vistaARenderizar] || <Inicio/>}
+        </div>
     )
 }
-/*
-function ContenedorTarjetas({vista}){
-    const vistas={
-        Inicio: <Inicio/>,
-        AcercaDe: <AcercaDe/>,
-        Productos: <Productos/>,
-        Sucursales: <Sucursales/>,
-        Contacto: <Contacto/>
 
-    }
-}
-    */
 function Inicio() {
     return(
         <div className='InicioDiv'>
-        <>
             <TarjetaComponent />
             <TarjetaComponent2 />
             <TarjetaComponent3 />
-        </>
         </div>
     );
 }
-/*
-function AcercaDe(){
-    return <h2>Acerca de nosotros</h2>;   
-}
-function Productos(){
-    return <h2>Productos</h2>;
-}
-    */
-   /*
-function Sucursales(){
-    return <h2>Sucursales</h2>;
-}
-/*
-function Contactos(){
-    return <h2>Contactos</h2>;
-}
-    */
-/*
-function ContenedorCards(){
-    return(
-        <div className='ContenedorCardsDiv'>
-            <Tarjeta name='Eutiquio' descripcion='El pro es pro porque le sabe del pro'/>
 
-        </div>
-    )
-}
-*/
 function TarjetaComponent(){
     return(
         <div className='card1Div'>
@@ -102,6 +62,7 @@ function TarjetaComponent(){
         </div>
     )
 }
+
 function TarjetaComponent2(){
     return(
         <div className='card2Div'>
@@ -112,6 +73,7 @@ function TarjetaComponent2(){
         </div>
     )
 }
+
 function TarjetaComponent3(){
     return(
         <div className='card3Div'>
@@ -123,68 +85,9 @@ function TarjetaComponent3(){
     )
 }
 
-/*
-function Tarjeta(props){
-    return(
-        <div className='CardDiv'>
-            <img src={iconoTerraria} alt="Terraria" />
-            <h2>{props.name}</h2>
-            <p>{props.descripcion}</p>
-            <a href="#">Leer mas</a>
-        </div>
-    )
-}
-*/
-/*
-function Cuerpo(){
-    return(
-        <div className='cuerpoDiv'>
-            <Tarjeta/>
-            <Card2/>
-            <Card3/>
-        </div>
-    )
-}
-function Card1(){
-    return(
-        <div className="card1Div">
-            <lu><img src={iconoTerraria} alt='Terraria'/></lu>
-                
-                <h2>Terraria</h2>
-        </div>
-    )
-}
-
-
-function Card2(){
-    return(
-        <div className="card2Div">
-            <lu><img src={iconoKenshi} alt='Kenshi'/></lu>
-            
-                <h2>Kenshi</h2>
-        </div>
-    )
-}
-function Card3(){
-    return(
-        <div className="card3Div">
-            <lu><img src={iconoRimWorld} alt='Rimworld'/></lu>
-                
-                <h2>RimWorld</h2>
-        </div>
-    )
-}
-/*
-function Saludar(){
-    return(
-        <div>Hola Ternicolas</div>
-    )
-}
-*/
 Expresiones.propTypes = {
-    vista: PropTypes.string.isRequired
+    vista: PropTypes.string.isRequired,
+    chVista: PropTypes.func.isRequired
 };
 
-
-
-export default Expresiones
+export default Expresiones;

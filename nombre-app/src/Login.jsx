@@ -5,34 +5,40 @@ import api from "./Services/api";
 
 const Login = ({chVista}) => {
     const { login } = useAuth();
-
-    const [username, setUsername] = useState('');
+    // 👇 Cambiamos username por email 👇
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // --- FUNCIÓN QUE TE FALTABA ---
     const handleCancelar = () => {
-        setUsername('');
+        setEmail('');
         setPassword('');
         alert("Campos limpiados");
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const credenciales = { username, password };
-        //console.log("Datos de registro: ", { username, password});
+        
+        // 👇 Ahora enviamos las variables con el nombre exacto de la API 👇
+        const credenciales = { email: email, password: password };
+        
         try {
-            //const credenciales = { username, password };
-            const respuesta = await api.post('/auth/login/', credenciales);
+            const respuesta = await api.post('/api/login', credenciales);
             
             if (respuesta.data.token) {
                 login(respuesta.data.token); 
                 alert('Autentificación autorizada');
-                chVista("Usuarios");
+                chVista("Usuarios"); 
             } else {
                 alert('Credenciales inválidas');
             }
         } catch (error) {
-            alert('Error', error);
+            if (error.response && error.response.status === 404) {
+                alert("Usuario no encontrado en la base de datos");
+            } else if (error.response && error.response.status === 401) {
+                alert("Contraseña incorrecta");
+            } else {
+                alert('Error al conectar con el servidor');
+            }
             console.error("Error:", error);
         }
     };
@@ -47,12 +53,11 @@ const Login = ({chVista}) => {
                         <input 
                             type="text" 
                             placeholder="Tu ejemplo@correo.com"
-                            value={username} 
-                            onChange={(e) => setUsername(e.target.value)} 
+                            value={email} // 👈 Actualizado
+                            onChange={(e) => setEmail(e.target.value)} // 👈 Actualizado
                             required
                         />
                     </div>
-
                     <div className="campo">
                         <label>Contraseña</label>
                         <input 
@@ -63,12 +68,6 @@ const Login = ({chVista}) => {
                             required
                         />
                     </div>
-
-                    <div className="opciones-adicionales">
-                        <a href="#" className="link-registro">Recordar contraseña</a>
-                        <a href="#" className="link-registro">Registrarme</a>
-                    </div>
-
                     <div className="grupo-botones">
                         <button type="submit" className="btn-principal">Iniciar Sesión</button>
                         <button type="button" className="btn-secundario" onClick={handleCancelar}>

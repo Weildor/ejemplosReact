@@ -1,34 +1,40 @@
-import api from "./Services/api";
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from "./Services/api";
 import './registrarCarrito.css';
 
 function RegistrarCarrito({ carritoEditando, limpiarSeleccion, onActualizacionExitosa }) {
+    // Si tu BD usa nombres en español (ej. id_usuario, id_producto), cámbialos aquí
     const [userId, setUserId] = useState('');
     const [productId, setProductId] = useState(''); 
     const [quantity, setQuantity] = useState('');
 
     useEffect(() => {
-            if (carritoEditando) {
-            setUserId(carritoEditando.userId || '');
-            // Tomamos el primer producto del arreglo para simplificar el formulario
-            setProductId(carritoEditando.products[0]?.productId || '');
-            setQuantity(carritoEditando.products[0]?.quantity || '');
+        if (carritoEditando) {
+            setUserId(carritoEditando.userId || carritoEditando.id_usuario || '');
+            
+            // Verificamos si existen productos antes de intentar sacarlos
+            if (carritoEditando.products && carritoEditando.products.length > 0) {
+                setProductId(carritoEditando.products[0].productId || carritoEditando.products[0].id_producto || '');
+                setQuantity(carritoEditando.products[0].quantity || carritoEditando.products[0].cantidad || '');
             } else {
-                resetForm();
+                setProductId('');
+                setQuantity('');
             }
-        }, [carritoEditando]);
-    
-        const resetForm = () => {
-            setUserId('');
-            setProductId('');
-            setQuantity('');
+        } else {
+            resetForm();
         }
+    }, [carritoEditando]);
+
+    const resetForm = () => {
+        setUserId('');
+        setProductId('');
+        setQuantity('');
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Estructura simplificada para tu lógica local o envío a API
+        // Objeto que se enviará al Backend
         const datosCarrito = {
             userId: userId,
             productId: productId,
@@ -37,37 +43,31 @@ function RegistrarCarrito({ carritoEditando, limpiarSeleccion, onActualizacionEx
 
         try {
             if (carritoEditando) {
-                //Logica de actualizar (PUT)
-                const respuesta = await api.put(`/carts/${carritoEditando.id}`, datosCarrito);
+                // 👇 Actualizar con ruta de tu backend
+                const respuesta = await api.put(`/api/carrito/${carritoEditando.id}`, datosCarrito);
                 console.log('Carrito Actualizado:', respuesta.data);
                 alert('¡Orden actualizada con éxito!');
                 limpiarSeleccion();
             } else {
-                const respuesta = await api.post('/carts', datosCarrito);
+                // 👇 Crear con ruta de tu backend
+                const respuesta = await api.post('/api/carritos', datosCarrito);
                 console.log('Carrito Registrado:', respuesta.data);
-                alert('¡Carrito añadido al carrito con éxito!');
+                alert('¡Producto añadido al carrito con éxito!');
             }
 
             resetForm();
-            // Nota: FakeStoreAPI requiere productId (número), 
-            // pero aquí enviamos el nombre como solicitaste.
-            /*const respuesta = await api.post('/carts', datosCarrito);
-            console.log('Carrito Registrado:', datosCarrito);
-            alert('¡Producto añadido al carrito con éxito!');
-            */
+            onActualizacionExitosa(); // Refresca la vista principal
             
-            // Limpiar campos
-            setUserId(''); setQuantity(''); setProductId('');
         } catch (error) {
             console.error('Error:', error);
-            alert('Hubo un error al registrar.');
+            alert('Hubo un error al guardar la orden.');
         }
     };
 
     return (
         <div className="container-form">
             <div className="card-form">
-                <h2>Registrar Carrito</h2>
+                <h2>{carritoEditando ? 'Editar Orden' : 'Registrar Carrito'}</h2>
                 <form onSubmit={handleSubmit}>
                     <input
                         type="number"
@@ -90,7 +90,17 @@ function RegistrarCarrito({ carritoEditando, limpiarSeleccion, onActualizacionEx
                         onChange={(e) => setQuantity(e.target.value)}
                         required
                     />
-                    <button type="submit">Registrar</button>
+                    
+                    <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                        <button type="submit">
+                            {carritoEditando ? 'Actualizar' : 'Registrar'}
+                        </button>
+                        {carritoEditando && (
+                            <button type="button" onClick={limpiarSeleccion} style={{ backgroundColor: '#dc3545' }}>
+                                Cancelar
+                            </button>
+                        )}
+                    </div>
                 </form>
             </div>
         </div>

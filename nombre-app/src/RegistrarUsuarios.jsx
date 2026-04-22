@@ -1,92 +1,145 @@
 import { useEffect, useState } from 'react';
 import api from "./Services/api";
-import axios from 'axios';
 import './registrarUsuarios.css';
 
 function RegistrarUsuarios({ usuarioEditando, limpiarSeleccion, onActualizacionExitosa}) {
-    // Solo los estados requeridos según la documentación
-    const [username, setUsername] = useState('');
+    const [nombre, setNombre] = useState('');
+    const [direccion, setDireccion] = useState('');
+    const [telefono, setTelefono] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [rol, setRol] = useState('cliente');
+    // 👇 1. Agregamos el estado para la fecha de registro 👇
+    const [fechaRegistro, setFechaRegistro] = useState('');
 
     useEffect(() => {
         if (usuarioEditando) {
-            setUsername(usuarioEditando.username);
-            setEmail(usuarioEditando.email);
-            setPassword(''); // Normalmente la contraseña no se carga por seguridad
+            setNombre(usuarioEditando.nombre || '');
+            setDireccion(usuarioEditando.direccion || '');
+            setTelefono(usuarioEditando.telefono || '');
+            setEmail(usuarioEditando.email || '');
+            setRol(usuarioEditando.rol || 'cliente');
+            setPassword(''); 
+            
+            // 👇 Extraemos solo la parte "YYYY-MM-DD" para que el input type="date" lo entienda
+            const fechaBD = usuarioEditando.fecha_registro || '';
+            const fechaFormateada = fechaBD.length >= 10 ? fechaBD.substring(0, 10) : '';
+            setFechaRegistro(fechaFormateada);
+            
         } else {
             resetForm();
         }
     }, [usuarioEditando]);
 
     const resetForm = () => {
-        setUsername('');
+        setNombre('');
+        setDireccion('');
+        setTelefono('');
         setEmail('');
         setPassword('');
+        setRol('cliente');
+        setFechaRegistro(''); // 👈 Limpiamos el campo al resetear
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); //Evita que la pagina se recargue
+        e.preventDefault(); 
 
-        // Objeto siguiendo el esquema de la imagen (id es generado por la API)
+        // 👇 2. Agregamos la fecha al objeto que se va a enviar a Node/Express 👇
         const nuevoUsuario = {
-            username: username,
-            email: email,
-            password: password
+            nombre,
+            direccion,
+            telefono,
+            email,
+            password,
+            rol,
+            fecha_registro: fechaRegistro 
         };
 
         try {
             if (usuarioEditando) {
-                //Logica de actualizar (PUT)
-                const respuesta = await api.put(`/users/${usuarioEditando.id}`, nuevoUsuario);
+                const respuesta = await api.put(`/api/usuario/${usuarioEditando.id}`, nuevoUsuario);
                 console.log('Usuario actualizado:', respuesta.data);
-                alert('¡Usuario actualizado con exito!');
-                limpiarSeleccion(); //Limpia el estado en el padre
+                alert('¡Usuario actualizado con éxito!');
+                limpiarSeleccion(); 
             } else {
-                const respuesta = await api.post('/users', nuevoUsuario);
+                const respuesta = await api.post('/api/usuarios', nuevoUsuario);
                 console.log('Usuario registrado:', respuesta.data);
-                alert('¡Usuario guardado con exito!');
+                alert('¡Usuario guardado con éxito!');
             }
 
             resetForm();
-            /*const respuesta = await api.post('/users', nuevoUsuario);
-            console.log('Usuario registrado:', respuesta.data);
-            alert('¡Usuario creado con éxito! ID: ' + respuesta.data.id);*/
+            onActualizacionExitosa(); 
             
-            // Limpiar campos
-            setUsername(''); setEmail(''); setPassword('');
         } catch (error) {
-            console.error('Error al registrar usuario:', error);
-            alert('Error al crear el usuario.');
+            console.error('Error al guardar usuario:', error);
+            alert('Error al procesar la solicitud.');
         }
     };
 
     return (
         <div className="contenedor-registro">
-            <h2>Crear Nuevo Usuario</h2>
+            <h2>{usuarioEditando ? 'Editar Usuario' : 'Crear Nuevo Usuario'}</h2>
+            
             <form onSubmit={handleSubmit} className="form-registro">
                 <input
                     type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Nombre completo"
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Dirección"
+                    value={direccion}
+                    onChange={(e) => setDireccion(e.target.value)}
+                    required
+                />
+                <input
+                    type="tel"
+                    placeholder="Teléfono"
+                    value={telefono}
+                    onChange={(e) => setTelefono(e.target.value)}
                     required
                 />
                 <input
                     type="email"
-                    placeholder="Email"
+                    placeholder="Correo Electrónico"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                 />
                 <input
                     type="password"
-                    placeholder="Password"
+                    placeholder={usuarioEditando ? "Nueva contraseña (opcional)" : "Contraseña"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required={!usuarioEditando} 
+                />
+                <select value={rol} onChange={(e) => setRol(e.target.value)} required>
+                    <option value="" disabled>Selecciona un rol</option>
+                    <option value="cliente">Cliente</option>
+                    <option value="admin">Administrador</option>
+                </select>
+                {/* 👇 3. Agregamos el input para la fecha de registro 👇 */}
+                <input
+                    type="date"
+                    title="Fecha de Registro"
+                    value={fechaRegistro}
+                    onChange={(e) => setFechaRegistro(e.target.value)}
                     required
                 />
-                <button type="submit" className="btn-registrar">Registrar</button>
+                
+                <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                    <button type="submit" className="btn-registrar">
+                        {usuarioEditando ? 'Actualizar' : 'Registrar'}
+                    </button>
+                    {usuarioEditando && (
+                        <button type="button" className="btn-eliminar" onClick={limpiarSeleccion}>
+                            Cancelar
+                        </button>
+                    )}
+                </div>
             </form>
         </div>
     );

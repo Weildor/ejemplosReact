@@ -12,8 +12,10 @@
   "dependencies": {
     "@react-google-maps/api": "^2.20.8",
     "axios": "^1.13.6",
+    "mysql2": "^3.22.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "sequelize": "^6.37.8"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

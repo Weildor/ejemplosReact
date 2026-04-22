@@ -10,8 +10,9 @@ function Usuarios() {
 
     const obtenerUsuarios = async () => {
         try {
-             const response = await api.get("/users");
-                setUsuarios(response.data);
+            // 👇 1. Cambiamos la ruta a la de tu backend real
+            const response = await api.get("/api/usuarios");
+            setUsuarios(response.data);
         } catch (error) {
             console.error("Error al obtener usuarios:", error);
         } finally {
@@ -22,6 +23,20 @@ function Usuarios() {
     useEffect(() => {
         obtenerUsuarios();
     }, []);
+
+    // 👇 2. Movimos removeUsuario ADENTRO para poder refrescar la tabla
+    const removeUsuario = async (usuarioId) => {
+        try {
+            // 👇 3. Ajustamos la ruta de eliminar según tu backend
+            const response = await api.delete(`/api/usuario/${usuarioId}`);
+            console.log(response.data);
+            alert('¡Usuario eliminado con éxito!');
+            obtenerUsuarios(); // 👈 Actualiza la tabla automáticamente al borrar
+        } catch (error) {
+            console.error(error);
+            alert('Error al eliminar usuario');
+        }
+    };
 
     if (loading) return <p className="cargando">Cargando usuarios...</p>;
 
@@ -43,10 +58,10 @@ function Usuarios() {
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Apellidos</th>
                             <th>Dirección</th>
                             <th>Teléfono</th>
                             <th>Email</th>
+                            <th>Rol</th> 
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -54,11 +69,12 @@ function Usuarios() {
                         {usuarios.map((user) => (
                             <tr key={user.id}>
                                 <td>{user.id}</td>
-                                <td className="capitalizar">{user.name.firstname}</td>
-                                <td className="capitalizar">{user.name.lastname}</td>
-                                <td>{`${user.address.street} ${user.address.number}, ${user.address.city}`}</td>
-                                <td>{user.phone}</td>
+                                
+                                <td className="capitalizar">{user.nombre}</td>
+                                <td>{user.direccion}</td>
+                                <td>{user.telefono}</td>
                                 <td>{user.email}</td>
+                                <td>{user.rol}</td>
                                 <td className="acciones">
                                     <button className="btn-editar" onClick={() => setUsuarioSeleccionado(user)}>Editar</button>
                                     <button className="btn-eliminar" onClick={() => removeUsuario(user.id)}>Eliminar</button>
@@ -71,18 +87,5 @@ function Usuarios() {
         </div>
     );
 }
-const removeUsuario = async (usuarioId) => {
-    try {
-        const response = await api.delete(
-        `/users/${usuarioId}`
-        );
-        console.log(response.data);
-        alert('¡Usuario eliminado con exito!');
- 
-    } catch (error) {
-        console.error(error);
-    }
-};
-
 
 export default Usuarios;

@@ -8,31 +8,34 @@ import './Encabezado.css';
 import PropTypes from 'prop-types';
 import Clima from './Clima';
 import { useAuth } from './AuthContext';
-function Encabezado({cambiarVista}){
-    return(
+
+function Encabezado({ cambiarVista }) {
+    return (
         <div className='encabezadoDiv'>
             <Logotipo />
-            <Menu cambiarVista={cambiarVista}/>
-            <Redes/>
-            
+            <Menu cambiarVista={cambiarVista} />
+            <Redes />
         </div>
-    )
+    );
+}
 
-}
-function Logotipo(){
-    return(
+function Logotipo() {
+    return (
         <div className='logoDiv'>
-            <img src={miImagen} alt='assets/logo2.png'/>
+            <img src={miImagen} alt='Logo' />
         </div>
-    )
+    );
 }
-function Menu({cambiarVista}){
+
+function Menu({ cambiarVista }) {
     const { isLoggedIn, logout } = useAuth();
+    
     const handleLogout = () => {
         logout();
-        cambiarVista("Inicio")
-    }
-    return(
+        cambiarVista("Inicio");
+    };
+
+    return (
         <div className='menuDiv'>
             <ul>
                 <li onClick={() => cambiarVista("Inicio")}>Inicio</li>
@@ -42,40 +45,41 @@ function Menu({cambiarVista}){
                 <li onClick={() => cambiarVista("Sucursales")}>Sucursales</li>
                 
                 {isLoggedIn ? (
-                <>
-                    <li onClick={() => cambiarVista("Usuarios")}>Usuarios</li>
-                    <li onClick={() => cambiarVista("Carrito")}>Carrito</li>
-                    <li onClick={() => cambiarVista("Categorias")}>Categorias</li>
-                    <li onClick={handleLogout}> Cerrar Sesion</li>
-                </>
-                
-                    ) : (
-                <li onClick={() => cambiarVista("Login")}>Login</li>
+                    <>
+                        <li onClick={() => cambiarVista("Usuarios")}>Usuarios</li>
+                        <li onClick={() => cambiarVista("Carrito")}>Carrito</li>
+                        <li onClick={() => cambiarVista("Categorias")}>Categorias</li>
+                        <li onClick={handleLogout}>Cerrar Sesión</li>
+                    </>
+                ) : (
+                    <li onClick={() => cambiarVista("Login")}>Login</li>
                 )}
             </ul>
         </div>
-    )
+    );
 }
-function Redes(){
-    return(
+
+function Redes() {
+    return (
         <div className='redesDiv'>
             <ul>
-                <li><img src={iconoFacebook} alt='Facebook'/></li>
-                <li><img src={iconoWhatsApp} alt='WhatsApp'/></li>
-                <li><img src={iconoInstagram} alt='Instagram'/></li>
-                <li><img src={iconoTwitter} alt='Twitter'/></li>
-                <li><img src={iconoGmail} alt='Gmail'/></li>
+                <li><img src={iconoFacebook} alt='Facebook' /></li>
+                <li><img src={iconoWhatsApp} alt='WhatsApp' /></li>
+                <li><img src={iconoInstagram} alt='Instagram' /></li>
+                <li><img src={iconoTwitter} alt='Twitter' /></li>
+                <li><img src={iconoGmail} alt='Gmail' /></li>
             </ul>
-            <Clima/>
+            <Clima />
         </div>
-    )
+    );
 }
+
 Menu.propTypes = {
     cambiarVista: PropTypes.func.isRequired
 };
+
 Encabezado.propTypes = {
     cambiarVista: PropTypes.func.isRequired
 };
 
-
-export default  Encabezado
+export default Encabezado;
