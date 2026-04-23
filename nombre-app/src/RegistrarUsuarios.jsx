@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import api from "./Services/api";
 import './registrarUsuarios.css';
 
-function RegistrarUsuarios({ usuarioEditando, limpiarSeleccion, onActualizacionExitosa}) {
+// Agregamos la prop 'esAutoRegistro' para saber si viene desde el Login
+function RegistrarUsuarios({ usuarioEditando, limpiarSeleccion, onActualizacionExitosa, esAutoRegistro, chVista }) {
     const [nombre, setNombre] = useState('');
     const [direccion, setDireccion] = useState('');
     const [telefono, setTelefono] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rol, setRol] = useState('cliente');
-    // 👇 1. Agregamos el estado para la fecha de registro 👇
-    const [fechaRegistro, setFechaRegistro] = useState('');
+    const [fechaRegistro, setFechaRegistro] = useState(new Date().toISOString().split('T')[0]); // Fecha de hoy por defecto
 
     useEffect(() => {
         if (usuarioEditando) {
@@ -21,11 +21,9 @@ function RegistrarUsuarios({ usuarioEditando, limpiarSeleccion, onActualizacionE
             setRol(usuarioEditando.rol || 'cliente');
             setPassword(''); 
             
-            // 👇 Extraemos solo la parte "YYYY-MM-DD" para que el input type="date" lo entienda
             const fechaBD = usuarioEditando.fecha_registro || '';
             const fechaFormateada = fechaBD.length >= 10 ? fechaBD.substring(0, 10) : '';
             setFechaRegistro(fechaFormateada);
-            
         } else {
             resetForm();
         }
@@ -38,77 +36,54 @@ function RegistrarUsuarios({ usuarioEditando, limpiarSeleccion, onActualizacionE
         setEmail('');
         setPassword('');
         setRol('cliente');
-        setFechaRegistro(''); // 👈 Limpiamos el campo al resetear
+        setFechaRegistro(new Date().toISOString().split('T')[0]);
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault(); 
 
-        // 👇 2. Agregamos la fecha al objeto que se va a enviar a Node/Express 👇
         const nuevoUsuario = {
             nombre,
             direccion,
             telefono,
             email,
             password,
-            rol,
+            rol: esAutoRegistro ? 'cliente' : rol, // Si se registra solo, siempre es cliente
             fecha_registro: fechaRegistro 
         };
 
         try {
             if (usuarioEditando) {
-                const respuesta = await api.put(`/api/usuario/${usuarioEditando.id}`, nuevoUsuario);
-                console.log('Usuario actualizado:', respuesta.data);
+                await api.put(`/api/usuario/${usuarioEditando.id}`, nuevoUsuario);
                 alert('¡Usuario actualizado con éxito!');
                 limpiarSeleccion(); 
             } else {
-                const respuesta = await api.post('/api/usuarios', nuevoUsuario);
-                console.log('Usuario registrado:', respuesta.data);
-                alert('¡Usuario guardado con éxito!');
+                await api.post('/api/usuarios', nuevoUsuario);
+                alert('¡Registro exitoso! Ya puedes iniciar sesión.');
+                // Si es auto-registro, lo mandamos de vuelta al Login
+                if (esAutoRegistro) {
+                    chVista("Login");
+                }
             }
 
             resetForm();
-            onActualizacionExitosa(); 
+            if (onActualizacionExitosa) onActualizacionExitosa(); 
             
         } catch (error) {
             console.error('Error al guardar usuario:', error);
-            alert('Error al procesar la solicitud.');
+            alert('Error: El correo ya podría estar registrado o hubo un fallo en el servidor.');
         }
     };
 
     return (
         <div className="contenedor-registro">
-            <h2>{usuarioEditando ? 'Editar Usuario' : 'Crear Nuevo Usuario'}</h2>
+            <h2>{esAutoRegistro ? 'Crea tu Cuenta' : (usuarioEditando ? 'Editar Usuario' : 'Crear Nuevo Usuario')}</h2>
             
             <form onSubmit={handleSubmit} className="form-registro">
-                <input
-                    type="text"
-                    placeholder="Nombre completo"
-                    value={nombre}
-                    onChange={(e) => setNombre(e.target.value)}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="Dirección"
-                    value={direccion}
-                    onChange={(e) => setDireccion(e.target.value)}
-                    required
-                />
-                <input
-                    type="tel"
-                    placeholder="Teléfono"
-                    value={telefono}
-                    onChange={(e) => setTelefono(e.target.value)}
-                    required
-                />
-                <input
-                    type="email"
-                    placeholder="Correo Electrónico"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
+                <input type="text" placeholder="Nombre completo" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
+                <input type="text" placeholder="Dirección" value={direccion} onChange={(e) => setDireccion(e.target.value)} required />
+                <input type="tel" placeholder="Teléfono" value={telefono} onChange={(e) => setTelefono(e.target.value)} required />
+                <input type="email" placeholder="Correo Electrónico" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 <input
                     type="password"
                     placeholder={usuarioEditando ? "Nueva contraseña (opcional)" : "Contraseña"}
@@ -116,25 +91,33 @@ function RegistrarUsuarios({ usuarioEditando, limpiarSeleccion, onActualizacionE
                     onChange={(e) => setPassword(e.target.value)}
                     required={!usuarioEditando} 
                 />
-                <select value={rol} onChange={(e) => setRol(e.target.value)} required>
-                    <option value="" disabled>Selecciona un rol</option>
-                    <option value="cliente">Cliente</option>
-                    <option value="admin">Administrador</option>
-                </select>
-                {/* 👇 3. Agregamos el input para la fecha de registro 👇 */}
-                <input
-                    type="date"
-                    title="Fecha de Registro"
-                    value={fechaRegistro}
-                    onChange={(e) => setFechaRegistro(e.target.value)}
-                    required
-                />
+
+                {/* Si es auto-registro, ocultamos el Rol y la Fecha */}
+                {!esAutoRegistro && (
+                    <>
+                        <select value={rol} onChange={(e) => setRol(e.target.value)} required>
+                            <option value="cliente">Cliente</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                        <input
+                            type="date"
+                            value={fechaRegistro}
+                            onChange={(e) => setFechaRegistro(e.target.value)}
+                            required
+                        />
+                    </>
+                )}
                 
-                <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
                     <button type="submit" className="btn-registrar">
-                        {usuarioEditando ? 'Actualizar' : 'Registrar'}
+                        {esAutoRegistro ? 'Registrarme' : (usuarioEditando ? 'Actualizar' : 'Registrar')}
                     </button>
-                    {usuarioEditando && (
+                    
+                    {esAutoRegistro ? (
+                        <p onClick={() => chVista("Login")} style={{textAlign:'center', cursor:'pointer', fontSize:'0.9rem', color:'#888'}}>
+                            ¿Ya tienes cuenta? Inicia sesión
+                        </p>
+                    ) : usuarioEditando && (
                         <button type="button" className="btn-eliminar" onClick={limpiarSeleccion}>
                             Cancelar
                         </button>

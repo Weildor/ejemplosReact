@@ -38,9 +38,20 @@ const Login = ({chVista}) => {
                 <h2>Iniciar Sesión</h2>
                 <input type="text" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                <button type="submit">Entrar</button>
-                <p onClick={() => chVista("RegistrarUsuarios")}>¿No tienes cuenta? Regístrate</p>
-            </form>
+                
+<button type="submit">Entrar</button>
+
+<div style={{ marginTop: '15px', textAlign: 'center' }}>
+    <p>¿No tienes cuenta?</p>
+    <button 
+        type="button" 
+        onClick={() => chVista("RegistrarUsuarios")}
+        style={{ background: 'none', border: 'none', color: '#007bff', cursor: 'pointer', textDecoration: 'underline' }}
+    >
+        Regístrate aquí como cliente
+        </button>
+    </div>
+</form>
         </div>
     );
 };

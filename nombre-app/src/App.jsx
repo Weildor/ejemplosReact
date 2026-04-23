@@ -7,12 +7,13 @@ import Footer from "./Footer"
 import { AuthProvider } from './AuthContext';
 
 function App(){
-  // 👇 Si no hay token, la vista inicial es Login, si lo hay, es Inicio
+  // Mantenemos la lógica: si hay token va a Inicio, si no a Login
   const [vista, setVista] = useState(localStorage.getItem('token') ? "Inicio" : "Login");
   
   return (
     <div>
       <AuthProvider>
+        {/* Pasamos setVista para que el login pueda cambiar la vista al entrar */}
         <Encabezado cambiarVista={setVista} vistaActual={vista} />
         <Expresiones vista={vista} chVista={setVista}/>
       </AuthProvider>
@@ -22,4 +23,4 @@ function App(){
   )
 }
 
-export default App
+export default App;

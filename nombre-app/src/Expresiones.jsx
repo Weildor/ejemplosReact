@@ -11,26 +11,23 @@ import Usuarios from './Usuarios';
 import Carrito from './Carrito';
 import Categorias from './Categorias';
 import Login from './Login';
+import RegistrarUsuarios from './RegistrarUsuarios'; 
 import { useAuth } from './AuthContext'; 
-
-// ... (Tus importaciones actuales)
-// Asegúrate de importar el componente de registro si ya lo tienes
-// import RegistrarUsuarios from './RegistrarUsuarios'; 
 
 function Expresiones(props){
     const { isLoggedIn } = useAuth();
     
-    // 👇 Estas son las únicas pantallas que se pueden ver sin iniciar sesión
+    // 1. Definimos las vistas públicas (permitidas sin login)
     const vistasPublicas = ["Login", "RegistrarUsuarios"];
 
     let vistaARenderizar = props.vista;
 
-    // 👇 Si NO está logueado y la vista NO es pública, lo forzamos al Login
+    // 2. Si NO está logueado y la vista NO es pública, forzamos al Login
     if (!isLoggedIn && !vistasPublicas.includes(vistaARenderizar)) {
         vistaARenderizar = "Login";
     }
 
-    const vistas={
+    const vistas = {
         Inicio: <Inicio />,
         AcercaDe: <AcercaDe />,
         Productos: <Productos />,
@@ -40,16 +37,24 @@ function Expresiones(props){
         Carrito: <Carrito />,
         Categorias: <Categorias />,
         Login: <Login chVista={props.chVista}/>,
-        // RegistrarUsuarios: <RegistrarUsuarios chVista={props.chVista} /> // Descomenta esto cuando lo tengas
+        
+        // Vista de registro configurada para auto-registro de clientes
+        RegistrarUsuarios: (
+            <RegistrarUsuarios 
+                esAutoRegistro={true}   
+                chVista={props.chVista} 
+                onActualizacionExitosa={() => {}} 
+            />
+        )
     }
 
     return(
         <div className='ExpresionesDiv'>
+            {/* Renderiza la vista seleccionada o Inicio por defecto */}
             {vistas[vistaARenderizar] || <Inicio/>}
         </div>
     )
 }
-// ... (El resto de tus componentes Tarjeta se queda igual)
 
 function Inicio() {
     return(
