@@ -9,11 +9,14 @@ import PropTypes from 'prop-types';
 import Clima from './Clima';
 import { useAuth } from './AuthContext';
 
-function Encabezado({ cambiarVista }) {
+function Encabezado({ cambiarVista, vistaActual }) {
+    const { isLoggedIn } = useAuth();
+
     return (
         <div className='encabezadoDiv'>
             <Logotipo />
-            <Menu cambiarVista={cambiarVista} />
+            {/* Solo mostramos el menú de navegación si el usuario ha iniciado sesión */}
+            {isLoggedIn && <Menu cambiarVista={cambiarVista} />}
             <Redes />
         </div>
     );
@@ -28,32 +31,33 @@ function Logotipo() {
 }
 
 function Menu({ cambiarVista }) {
-    const { isLoggedIn, logout } = useAuth();
+    const { logout, userRole } = useAuth(); 
     
     const handleLogout = () => {
         logout();
-        cambiarVista("Inicio");
+        cambiarVista("Login"); // Al cerrar sesión, lo enviamos directamente al Login
     };
 
     return (
         <div className='menuDiv'>
             <ul>
+                {/* Estas opciones las ven TODOS los usuarios logueados (clientes y admins) */}
                 <li onClick={() => cambiarVista("Inicio")}>Inicio</li>
                 <li onClick={() => cambiarVista("AcercaDe")}>Acerca de...</li>
                 <li onClick={() => cambiarVista("Productos")}>Productos</li>
                 <li onClick={() => cambiarVista("Contactos")}>Contactos</li>
                 <li onClick={() => cambiarVista("Sucursales")}>Sucursales</li>
+                <li onClick={() => cambiarVista("Carrito")}>Carrito</li>
                 
-                {isLoggedIn ? (
+                {/* Estas opciones SOLO las ve el Administrador */}
+                {userRole === 'admin' && (
                     <>
                         <li onClick={() => cambiarVista("Usuarios")}>Usuarios</li>
-                        <li onClick={() => cambiarVista("Carrito")}>Carrito</li>
                         <li onClick={() => cambiarVista("Categorias")}>Categorias</li>
-                        <li onClick={handleLogout}>Cerrar Sesión</li>
                     </>
-                ) : (
-                    <li onClick={() => cambiarVista("Login")}>Login</li>
                 )}
+                
+                <li onClick={handleLogout} style={{ color: '#ff4d4d', fontWeight: 'bold' }}>Cerrar Sesión</li>
             </ul>
         </div>
     );
@@ -79,7 +83,8 @@ Menu.propTypes = {
 };
 
 Encabezado.propTypes = {
-    cambiarVista: PropTypes.func.isRequired
+    cambiarVista: PropTypes.func.isRequired,
+    vistaActual: PropTypes.string // Añadido para evitar warnings en consola
 };
 
 export default Encabezado;

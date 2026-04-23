@@ -5,29 +5,29 @@ import api from "./Services/api";
 
 const Login = ({chVista}) => {
     const { login } = useAuth();
-    // 👇 Cambiamos username por email 👇
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleCancelar = () => {
         setEmail('');
         setPassword('');
-        alert("Campos limpiados");
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // 👇 Ahora enviamos las variables con el nombre exacto de la API 👇
         const credenciales = { email: email, password: password };
         
         try {
             const respuesta = await api.post('/api/login', credenciales);
             
             if (respuesta.data.token) {
-                login(respuesta.data.token); 
-                alert('Autentificación autorizada');
-                chVista("Usuarios"); 
+                // 👇 Asumimos que tu API devuelve el rol (ej: respuesta.data.rol)
+                const rolDelUsuario = respuesta.data.rol || 'cliente'; 
+                
+                login(respuesta.data.token, rolDelUsuario); 
+                alert('Autentificación exitosa');
+                chVista("Inicio"); // 👇 Si se loguea bien, lo mandamos a Inicio
             } else {
                 alert('Credenciales inválidas');
             }
@@ -52,9 +52,9 @@ const Login = ({chVista}) => {
                         <label>Usuario / Correo</label>
                         <input 
                             type="text" 
-                            placeholder="Tu ejemplo@correo.com"
-                            value={email} // 👈 Actualizado
-                            onChange={(e) => setEmail(e.target.value)} // 👈 Actualizado
+                            placeholder="ejemplo@correo.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </div>
@@ -70,11 +70,13 @@ const Login = ({chVista}) => {
                     </div>
                     <div className="grupo-botones">
                         <button type="submit" className="btn-principal">Iniciar Sesión</button>
-                        <button type="button" className="btn-secundario" onClick={handleCancelar}>
-                            Cancelar
-                        </button>
+                        <button type="button" className="btn-secundario" onClick={handleCancelar}>Cancelar</button>
                     </div>
                 </form>
+                {/* 👇 Agregamos el enlace para ir a registrarse 👇 */}
+                <div style={{marginTop: '15px', textAlign: 'center'}}>
+                    <p style={{color: 'white'}}>¿No tienes cuenta? <span onClick={() => chVista("RegistrarUsuarios")} style={{color: '#4da6ff', cursor: 'pointer', textDecoration: 'underline'}}>Regístrate aquí</span></p>
+                </div>
             </div>
         </div>
     );
