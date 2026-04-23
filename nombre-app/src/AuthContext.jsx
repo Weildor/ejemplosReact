@@ -4,35 +4,44 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
-    // 👇 Añadimos el estado para el rol del usuario
     const [userRole, setUserRole] = useState(localStorage.getItem('rol') || null);
+    
+    // Inicialización segura para evitar el error de JSON "undefined"
+    const [user, setUser] = useState(() => {
+        const stored = localStorage.getItem('user');
+        if (!stored || stored === "undefined") return null;
+        try {
+            return JSON.parse(stored);
+        } catch {
+            return null;
+        }
+    });
 
-    // 👇 Actualizamos la función login para recibir también el rol
-    const login = (token, rol) => {
+    const login = (token, rol, userData) => {
+        if (!userData || !userData.id) {
+            console.error("Error: El backend no envió el ID del usuario");
+        }
         localStorage.setItem('token', token);
-        localStorage.setItem('rol', rol); // Guardamos el rol en localStorage
+        localStorage.setItem('rol', rol);
+        localStorage.setItem('user', JSON.stringify(userData));
+        
         setIsLoggedIn(true);
         setUserRole(rol);
+        setUser(userData); 
     };
 
     const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('rol'); // Limpiamos el rol al salir
+        localStorage.clear(); // Limpia todo de golpe
         setIsLoggedIn(false);
         setUserRole(null);
+        setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, userRole, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, userRole, user, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error("useAuth debe usarse dentro de un AuthProvider")
-    }
-    return context;
-};
+export const useAuth = () => useContext(AuthContext);

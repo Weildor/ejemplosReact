@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react';
 import api from "./Services/api";
-import './Productos.css';
-import RegistrarProductos from "./RegistrarProductos";
 import { useAuth } from './AuthContext'; 
+import RegistrarProductos from "./RegistrarProductos"; // Asegúrate de tener este componente
+import './Productos.css'; // Tu archivo de estilos
 
 function Productos() {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [productoSeleccionado, setProductoSeleccionado] = useState(null);
     
-    // Extraemos userRole del contexto de autenticación
-    const { userRole } = useAuth(); 
+    // Extraemos userRole y user (que ahora sí tiene el ID)
+    const { userRole, user } = useAuth(); 
 
-    // Función para obtener la lista de productos del servidor
     const obtenerProductos = async () => {
         try {
             const response = await api.get("/api/productos");
@@ -24,36 +23,49 @@ function Productos() {
         }
     };
 
-    // Función para eliminar un producto (Solo accesible para admin visualmente)
     const removeProducto = async (productoId) => {
         if (!window.confirm("¿Estás seguro de eliminar este producto?")) return;
         try {
             await api.delete(`/api/producto/${productoId}`);
-            alert('¡Producto eliminado con éxito!');
-            obtenerProductos(); // Recargamos la lista
+            obtenerProductos();
         } catch (error) {
             console.error("Error al eliminar:", error);
-            alert("No se pudo eliminar el producto.");
         }
     };
 
-    // Función para añadir al carrito (Lógica para el Cliente)
-    const agregarAlCarrito = (producto) => {
-        console.log("Producto seleccionado:", producto);
-        alert(`${producto.nombre} se ha añadido al carrito.`);
-        // Aquí puedes añadir la llamada a api.post('/api/carritos', ...) en el futuro
+    const agregarAlCarrito = async (producto) => {
+        console.log("Usuario actual:", user);
+
+        if (!user || !user.id) {
+            alert("Debes iniciar sesión para agregar productos al carrito.");
+            return;
+        }
+
+        const payload = {
+            id_usuario: user.id,      
+            id_producto: producto.id, 
+            cantidad: 1,              
+            fecha: new Date().toISOString()
+        };
+
+        try {
+            await api.post('/api/carritos', payload);
+            alert(`¡${producto.nombre} añadido al carrito con éxito!`);
+        } catch (error) {
+            console.error("Error al enviar al carrito:", error);
+            alert("Error al procesar la orden.");
+        }
     };
 
-    useEffect(() => {
-        obtenerProductos();
+    useEffect(() => { 
+        obtenerProductos(); 
     }, []);
 
     if (loading) return <p className="cargando">Cargando catálogo...</p>;
 
     return (
         <div className="contenedor-principal">
-            
-            {/* 1. Muestra el formulario de registro SOLO si el rol es 'admin' */}
+            {/* Si es Admin, mostramos el formulario de registro/edición arriba */}
             {userRole === 'admin' && (
                 <RegistrarProductos
                     productoEditando={productoSeleccionado}
@@ -70,40 +82,29 @@ function Productos() {
                 {productos.map((producto) => (
                     <article key={producto.id} className="tarjeta-producto">
                         <div className="imagen-wrapper">
-                            <img 
-                                src={"https://placehold.co/200x200?text=Producto"}
-                                alt={producto.nombre} 
-                            />
+                            {/* Placeholder de imagen */}
+                            <img src="https://placehold.co/200x200?text=Producto" alt={producto.nombre} />
                         </div>
+                        
                         <div className="info-producto">
-                            <span className="categoria">Categoría: {producto.id_categoria}</span>
+                            <span className="categoria">CATEGORÍA ID: {producto.id_categoria}</span>
                             <h2>{producto.nombre}</h2> 
-                            <p className="descripcion">{producto.descripcion}</p>
+                            <p className="descripcion">{producto.descripcion || 'Buen producto'}</p>
                             <p className="precio">${producto.precio}</p>
                             <p className="stock">Disponibles: {producto.stock}</p>
                             
-                            {/* Botón visible para todos los usuarios logueados */}
-                            <button 
-                                className="btn-carrito" 
-                                onClick={() => agregarAlCarrito(producto)}
-                            >
+                            <button className="btn-carrito" onClick={() => agregarAlCarrito(producto)}>
                                 Añadir al carrito
                             </button>
 
-                            {/* 2. Botones de administración SOLO si el rol es 'admin' */}
+                            {/* Acciones exclusivas para el Admin dentro de la tarjeta */}
                             {userRole === 'admin' && (
                                 <div className="admin-actions">
                                     <hr />
-                                    <button 
-                                        className="btn-editar" 
-                                        onClick={() => setProductoSeleccionado(producto)}
-                                    >
-                                        Editar Producto
+                                    <button className="btn-editar" onClick={() => setProductoSeleccionado(producto)}>
+                                        Editar
                                     </button>
-                                    <button 
-                                        className="btn-eliminar" 
-                                        onClick={() => removeProducto(producto.id)}
-                                    >
+                                    <button className="btn-eliminar" onClick={() => removeProducto(producto.id)}>
                                         Eliminar
                                     </button>
                                 </div>
@@ -117,7 +118,6 @@ function Productos() {
 }
 
 export default Productos;
-
 
 
 

@@ -1,6 +1,5 @@
 import { useAuth } from './AuthContext';
 import { useState } from 'react';
-import './login.css';
 import api from "./Services/api"; 
 
 const Login = ({chVista}) => {
@@ -8,76 +7,31 @@ const Login = ({chVista}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleCancelar = () => {
-        setEmail('');
-        setPassword('');
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        const credenciales = { email: email, password: password };
-        
         try {
-            const respuesta = await api.post('/api/login', credenciales);
+            const respuesta = await api.post('/api/login', { email, password });
             
             if (respuesta.data.token) {
-                // 👇 Asumimos que tu API devuelve el rol (ej: respuesta.data.rol)
-                const rolDelUsuario = respuesta.data.rol || 'cliente'; 
-                
-                login(respuesta.data.token, rolDelUsuario); 
-                alert('Autentificación exitosa');
-                chVista("Inicio"); // 👇 Si se loguea bien, lo mandamos a Inicio
-            } else {
-                alert('Credenciales inválidas');
+                // Extraemos token, rol y el objeto user (que contiene el ID)
+                login(respuesta.data.token, respuesta.data.rol, respuesta.data.user); 
+                alert('¡Bienvenido!');
+                chVista("Inicio"); 
             }
         } catch (error) {
-            if (error.response && error.response.status === 404) {
-                alert("Usuario no encontrado en la base de datos");
-            } else if (error.response && error.response.status === 401) {
-                alert("Contraseña incorrecta");
-            } else {
-                alert('Error al conectar con el servidor');
-            }
-            console.error("Error:", error);
+            alert('Error en las credenciales o conexión');
         }
     };
 
     return (
         <div className="contenedor-login">
-            <div className="tarjeta-login">
+            <form onSubmit={handleSubmit} className="tarjeta-login">
                 <h2>Iniciar Sesión</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="campo">
-                        <label>Usuario / Correo</label>
-                        <input 
-                            type="text" 
-                            placeholder="ejemplo@correo.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="campo">
-                        <label>Contraseña</label>
-                        <input 
-                            type="password" 
-                            placeholder="********"
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                            required
-                        />
-                    </div>
-                    <div className="grupo-botones">
-                        <button type="submit" className="btn-principal">Iniciar Sesión</button>
-                        <button type="button" className="btn-secundario" onClick={handleCancelar}>Cancelar</button>
-                    </div>
-                </form>
-                {/* 👇 Agregamos el enlace para ir a registrarse 👇 */}
-                <div style={{marginTop: '15px', textAlign: 'center'}}>
-                    <p style={{color: 'white'}}>¿No tienes cuenta? <span onClick={() => chVista("RegistrarUsuarios")} style={{color: '#4da6ff', cursor: 'pointer', textDecoration: 'underline'}}>Regístrate aquí</span></p>
-                </div>
-            </div>
+                <input type="text" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <button type="submit">Entrar</button>
+                <p onClick={() => chVista("RegistrarUsuarios")}>¿No tienes cuenta? Regístrate</p>
+            </form>
         </div>
     );
 };
