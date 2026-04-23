@@ -8,20 +8,29 @@ const Login = ({chVista}) => {
     const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const respuesta = await api.post('/api/login', { email, password });
-            
-            if (respuesta.data.token) {
-                // Extraemos token, rol y el objeto user (que contiene el ID)
-                login(respuesta.data.token, respuesta.data.rol, respuesta.data.user); 
-                alert('¡Bienvenido!');
-                chVista("Inicio"); 
-            }
-        } catch (error) {
-            alert('Error en las credenciales o conexión');
+    e.preventDefault();
+    try {
+        const respuesta = await api.post('/api/login', { email, password });
+        
+        // Verificamos que la respuesta contenga el token y el ID
+        if (respuesta.data.token && respuesta.data.id) {
+            // Creamos el objeto de usuario con el ID real del backend
+            const datosUsuario = {
+                id: respuesta.data.id,
+                rol: respuesta.data.rol,
+                email: email
+            };
+
+            // Enviamos los datos al AuthContext
+            login(respuesta.data.token, respuesta.data.rol, datosUsuario); 
+            alert('¡Bienvenido!');
+            chVista("Inicio"); 
         }
-    };
+    } catch (error) {
+        console.error("Error en login:", error);
+        alert('Credenciales incorrectas');
+    }
+};
 
     return (
         <div className="contenedor-login">

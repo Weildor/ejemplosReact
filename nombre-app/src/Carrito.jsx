@@ -9,7 +9,7 @@ function Carrito() {
     const [loading, setLoading] = useState(true);
     const [carritoSeleccionado, setCarritoSeleccionado] = useState(null);
     
-    // Extraemos 'user' (que contiene el id) y 'userRole' del contexto
+    // Extraemos los datos de autenticación
     const { userRole, user } = useAuth(); 
 
     const obtenerCarritos = async () => {
@@ -41,19 +41,24 @@ function Carrito() {
 
     if (loading) return <p className="cargando">Cargando órdenes...</p>;
 
-    // --- LÓGICA DE FILTRADO CORREGIDA ---
-    // 1. Si es admin, ve todo.
-    // 2. Si es cliente, comparamos el ID del carrito con el ID del usuario logueado.
+    // --- LÓGICA DE FILTRADO REFORZADA ---
     const carritosVisibles = userRole === 'admin' 
         ? carritos 
         : carritos.filter(cart => {
-            // Verificamos que existan datos antes de comparar para evitar errores
-            return user && user.id && Number(cart.id_usuario) === Number(user.id);
+            // Intentamos obtener el ID del usuario de varias fuentes para evitar el ID nulo
+            const currentUserId = user?.id || user?.userId;
+            
+            // Log de depuración para que veas en consola qué está fallando si sigue vacío
+            if (!currentUserId) {
+                console.warn("Advertencia: No se detectó ID de usuario en la sesión actual.");
+            }
+
+            // Comparamos usando Number para asegurar que '1' sea igual a 1
+            return currentUserId && Number(cart.id_usuario) === Number(currentUserId);
         });
 
     return (
         <div className="contenedor-carrito">
-            {/* Formulario solo visible para Admin */}
             {userRole === 'admin' && (
                 <RegistrarCarrito
                     carritoEditando={carritoSeleccionado}
@@ -92,14 +97,12 @@ function Carrito() {
                             </div>
 
                             <div className="acciones-carrito">
-                                {/* Botón Editar: Solo Admin */}
                                 {userRole === 'admin' && (
                                     <button className="btn-editar" onClick={() => setCarritoSeleccionado(cart)}>
                                         Editar Orden
                                     </button>
                                 )}
                                 
-                                {/* Botón Eliminar/Cancelar: Visible para ambos */}
                                 <button className="btn-eliminar" onClick={() => removeCarrito(cart.id)}>
                                     {userRole === 'admin' ? "Eliminar" : "Cancelar Orden"}
                                 </button>
